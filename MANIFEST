@@ -1,0 +1,17 @@
+README
+setup.py
+generic_images/__init__.py
+generic_images/admin.py
+generic_images/context_processors.py
+generic_images/forms.py
+generic_images/models.py
+generic_utils/__init__.py
+generic_utils/app_utils.py
+generic_utils/injector.py
+generic_utils/managers.py
+generic_utils/templatetags.py
+generic_utils/test_helpers.py
+generic_images/locale/en/LC_MESSAGES/django.mo
+generic_images/locale/en/LC_MESSAGES/django.po
+generic_images/locale/ru/LC_MESSAGES/django.mo
+generic_images/locale/ru/LC_MESSAGES/django.po
