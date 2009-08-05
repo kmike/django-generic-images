@@ -12,7 +12,7 @@ setup(
       long_description = "This app provides image model (with useful managers etc) that can be attached to any other Django model using generic relations. ",
       license = 'MIT license',
       packages=['generic_images', 'generic_utils'],
-      package_data={'generic_images': ['locale/*',]},      
+      package_data={'generic_images': ['locale/en/LC_MESSAGES/*','locale/ru/LC_MESSAGES/*']},      
       
       classifiers=(
           'Development Status :: 3 - Alpha',
