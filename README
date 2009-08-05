@@ -1,0 +1,97 @@
+
+= Overview =
+
+django-generic-images is a generic images pluggable django app.
+
+This app provides image model (with useful managers etc) 
+that can be attached to any other Django model using generic relations.
+
+
+= Installation =
+
+$ easy_install django-generic-images
+or
+
+$ hg clone http://bitbucket.org/kmike/django-generic-images/ 
+$ cd django-generic-images
+$ python setup.py install
+
+Then add 'generic_images' to your INSTALLED_APPS in settings.py and run 
+$ manage.py syncdb
+
+= Models =
+
+== AttachedImage ==
+
+Image model that can be attached to any other Django model using 
+generic relations. Description of fields, managers and instance methods is below.
+    
+===Fields===
+
+* user
+	associated user, for example user who uploaded image
+
+* content_type
+* object_id
+* content_object
+	generic relation data
+
+* caption
+	text caption for image	
+	
+* is_main
+	if the image is the main image for object. 
+	This field is set to False automatically for all images attached to 
+	same object if image with is_main=True is saved to ensure that there
+	is only 1 main image for object.
+	
+* order 
+	integer field to support ordered image sets. On instance creation it is 
+	set to max(id)+1 for all AttachedImage's.
+
+===Methods===
+
+* get_upload_path(self, filename)
+	Override this in proxy subclass to customize upload path.
+    Default upload path is "/media/images/<user.id>/<image.id>.<ext>"
+    or "/media/images/common/<image.id>.<ext>" (if user is not set).
+    image.id is predicted as it is unknown at this stage.
+    
+
+===Managers===
+
+1. objects = AttachedImageManager()
+
+It is default manager with helpful functions for attached images:
+
+* get_for_model(self, model) - Returns all images that are attached to given model            
+* get_main_for(self, model) - Returns main image for given model
+
+	    	
+2. injector = GenericInjector()
+
+It is helper manager to reduce sql query number while selecting attached images.
+Selection is performed for a list of objects. Resulting data is aviable as attribute 
+of original model. Only one instance per object can be selected. Example usage: 
+select (and make acessible as user.avatar) all avatars for a list of user when 
+avatars are AttachedImage's attached to User model with is_main=True attributes.
+
+
+from django.contrib.auth.models import User
+from generic_images.models import AttachedImage
+
+users = User.objects.all()[:10]
+AttachedImage.injector.inject_to(users,'avatar', is_main=True)	
+
+# i=0..9: users[i].avatar is AttachedImage objects with is_main=True. 
+# If there is no such AttachedImage, users[i].avatar is None
+
+for code above 2 or 3 sql queries will be performed:
+1. one query for selecting 10 users,
+2. one query for selecting all avatars (images with is_main=True) for selected users
+3. and maybe one query for selecting content-type for User model
+
+methods:
+* inject_to(self, objects, field_name, get_inject_object = lambda obj: obj, kwargs)
+
+   
