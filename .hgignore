@@ -32,3 +32,4 @@ generic_images/migrations
 #setup files
 build/
 dist/
+.build/
