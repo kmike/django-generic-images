@@ -10,14 +10,14 @@ class PluggableSite(object):
         For usage case please check photo_albums app.
     '''
     def __init__(self, instance_name, queryset, app_name, 
-                 extra_context=None, template_object_name = None,
+                 extra_context=None, template_object_name = 'object',
                  has_edit_permission = lambda request, obj: True):
         self.instance_name = instance_name
         self.queryset = queryset
         self.extra_context = extra_context or {}
         self.app_name = app_name
         self.has_edit_permission = has_edit_permission
-        self.template_object_name = template_object_name or self.instance_name
+        self.template_object_name = template_object_name
         
         
     def reverse(self, url, args=None, kwargs=None):
