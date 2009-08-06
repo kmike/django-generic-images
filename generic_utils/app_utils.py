@@ -11,14 +11,15 @@ class PluggableSite(object):
     '''
     def __init__(self, instance_name, queryset, app_name, 
                  extra_context=None, template_object_name = 'object',
-                 has_edit_permission = lambda request, obj: True):
+                 has_edit_permission = lambda request, obj: True,
+                 context_processors=None):
         self.instance_name = instance_name
         self.queryset = queryset
         self.extra_context = extra_context or {}
         self.app_name = app_name
         self.has_edit_permission = has_edit_permission
         self.template_object_name = template_object_name
-        
+        self.context_processors = context_processors
         
     def reverse(self, url, args=None, kwargs=None):
         ''' Reverse an url taking self.app_name in account '''
