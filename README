@@ -25,6 +25,11 @@ $ manage.py syncdb
 
 Image model that can be attached to any other Django model using 
 generic relations. Description of fields, managers and instance methods is below.
+
+Be aware that AttachedImage is a subclass of abstract ReplaceOldImageModel.
+ReplaceOldImageModel has overrided save method that deletes old file if new file is uploaded.
+Standard django ImageField behaviour is to keep old files so old files are never deleted. 
+
     
 ===Fields===
 
