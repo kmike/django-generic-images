@@ -67,7 +67,7 @@ class AttachedImage(ReplaceOldImageModel):
         generic relations. 
     '''
     
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, verbose_name=_('User'))
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
