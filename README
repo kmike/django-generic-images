@@ -33,6 +33,9 @@ Standard django ImageField behaviour is to keep old files so old files are never
     
 ===Fields===
 
+* image
+	ImageField 
+
 * user
 	associated user, for example user who uploaded image
 
