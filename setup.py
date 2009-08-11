@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
       name='django-generic-images',
-      version='0.15a',
+      version='0.20',
       author='Mikhail Korobov',
       author_email='kmike84@gmail.com',
       url='http://bitbucket.org/kmike/django-generic-images/',      
@@ -13,6 +13,9 @@ setup(
       license = 'MIT license',
       packages=['generic_images', 'generic_utils'],
       package_data={'generic_images': ['locale/en/LC_MESSAGES/*','locale/ru/LC_MESSAGES/*']},      
+      
+      requires = ['django (>=1.1)'],
+      install_requires=['django-composition >= 0.20'],
       
       classifiers=(
           'Development Status :: 3 - Alpha',

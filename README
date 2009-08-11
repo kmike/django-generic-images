@@ -3,8 +3,14 @@
 
 django-generic-images is a generic images pluggable django app.
 
-This app provides image model (with useful managers and methods) 
+This app provides image model (with useful managers, methods and fields) 
 that can be attached to any other Django model using generic relations.
+
+Requirements: django 1.1 (or trunk).
+
+django-composition (fine application for writing denormalised fields 
+by Alex Koshelev) is required if you want to use ImageCountField or 
+UserImageCountField.
 
 
 = Installation =
@@ -19,16 +25,18 @@ $ python setup.py install
 Then add 'generic_images' to your INSTALLED_APPS in settings.py and run 
 $ manage.py syncdb
 
-= Models =
+= Provided models =
 
 == AttachedImage ==
 
 Image model that can be attached to any other Django model using 
-generic relations. Description of fields, managers and instance methods is below.
+generic relations. Description of it's fields, managers and instance methods 
+is below.
 
 Be aware that AttachedImage is a subclass of abstract ReplaceOldImageModel.
-ReplaceOldImageModel has overrided save method that deletes old file if new file is uploaded.
-Standard django ImageField behaviour is to keep old files so old files are never deleted. 
+ReplaceOldImageModel has overrided save method that deletes old file if new 
+file is uploaded. Standard django ImageField behaviour is to keep old files 
+so old files are never deleted. 
 
     
 ===Fields===
@@ -78,10 +86,11 @@ It is default manager with helpful functions for attached images. Methods:
 2. injector = GenericInjector()
 
 It is helper manager to reduce sql query number while selecting attached images.
-Selection is performed for a list of objects. Resulting data is aviable as attribute 
-of original model. Only one instance per object can be selected. Example usage: 
-select (and make acessible as user.avatar) all avatars for a list of users when 
-avatars are AttachedImage's (with is_main=True) attached to User model .
+Selection is performed for a list of objects. Resulting data is available as 
+attribute of original model. Only one instance per object can be selected. 
+Example usage: select (and make acessible as user.avatar) all avatars for a 
+list of users when avatars are AttachedImage's (with is_main=True) attached to 
+User model.
 
 Example:
 
@@ -92,7 +101,8 @@ users = User.objects.all()[:10]
 AttachedImage.injector.inject_to(users, 'avatar', is_main=True)	
 
 # i=0..9: users[i].avatar is AttachedImage objects with is_main=True. 
-# If there is no such AttachedImage (user doesn't have an avatar), users[i].avatar is None
+# If there is no such AttachedImage (user doesn't have an avatar), 
+# users[i].avatar is None
 
 
 For this example 2 or 3 sql queries will be executed:
@@ -110,18 +120,62 @@ will be attached to elements of this iterable.
 `field_name` is the attached object attribute name
 
 `get_injector_object` is a callable that takes object in `objects` iterable.
-Image will be available as an attribute of the result of get_injector_object(object). 
-Images attached to get_injector_object(object) will be selected.
+Image will be available as an attribute of the result of 
+get_injector_object(object). Images attached to get_injector_object(object) 
+will be selected.
 
 All other kwargs will be passed as arguments to queryset filter function.
 
-Example: you have a list of comments. Each comment has 'user' attribute. You want to 
-fetch 10 comments and their authors with avatars. Avatars should be accessible as `user.avatar`:
+Example: you have a list of comments. Each comment has 'user' attribute. 
+You want to fetch 10 comments and their authors with avatars. Avatars should 
+be accessible as `user.avatar`:
 
 comments = Comment.objects.all().select_related('user')[:10]
 AttachedImage.injector.inject_to(comments, 'avatar', lambda obj: obj.user, is_main=True)   
 
 
-One can reuse GenericInjector manager for other models that are supposed to be attached 
-via generic relationship. It can be considered as an addition to GFKmanager and GFKQuerySet 
-from djangosnippets for different use cases.
+One can reuse GenericInjector manager for other models that are supposed to 
+be attached via generic relationship. It can be considered as an addition to 
+GFKmanager and GFKQuerySet from djangosnippets for different use cases.
+
+
+= Provided fields for denormalisation =
+
+django-generic-images provides fields for storing information about 
+attached images count. Value is stored in model that images are 
+attached to. Value is updated automatically when image is saved or deleted.
+Access to this value is much faster than additional "count()" queries.
+
+
+== ImageCountField ==
+
+It is field with model's attached images count.
+Value of this field is updated automatically when 
+image is added or removed.
+
+Syntax samples:
+
+from generic_images.fields import ImageCountField
+
+class MyModel1(models.Model):
+	#... fields definitions
+	image_count = ImageCountField()
+
+
+class MyModel2(models.Model):
+	#... fields definitions
+	image_count = ImageCountField(native=models.IntegerField(u'MyModel2 Images count', default=0))
+
+
+== UserImageCountField ==
+
+This field is useful when you want to use something like ImageCountField
+for User model. It is not possible to add a field to User model without 
+duck punching (monkey patching). UserImageCountField should be 
+put into user's profile (same model as defined in AUTH_PROFILE_MODULE). 
+It will contain number of images that are attached to corresponding User.
+FK attribute to User model is considered `user` by default, but this 
+can be overrided using `user_attr` argument to UserImageCountField 
+constructor. As with ImageCountField, UserImageCountField constructor 
+accepts also `native` argument - an underlying field.
+
