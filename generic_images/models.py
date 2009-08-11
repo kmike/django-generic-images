@@ -1,5 +1,6 @@
 #coding: utf-8
 import os
+import random
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -84,9 +85,14 @@ class AttachedImage(ReplaceOldImageModel):
     
     
     def _get_next_pk(self):
-        ''' Ugly method. Maybe unique hash will be better? '''
         max_pk = AttachedImage.objects.aggregate(max_pk=Max('pk'))['max_pk'] or 0
         return max_pk+1
+
+
+    def get_file_name(self, filename):
+#        alphabet = "1234567890abcdefghijklmnopqrstuvwxyz"        
+#        return ''.join([random.choice(alphabet) for i in xrange(16)]) # 1e25 variants
+        return str(self._get_next_pk())
     
         
     def get_upload_path(self, filename):
@@ -95,11 +101,10 @@ class AttachedImage(ReplaceOldImageModel):
             or "/media/images/common/<image.id>.<ext>" if user is not set.
             image.id is predicted as it is unknown at this stage.
         '''        
-        predicted_pk = self._get_next_pk()        
-        user_folder = str(self.user.pk) if self.user else 'common'
+        user_folder = str(self.user.pk) if self.user else 'common'        
         
         root, ext = os.path.splitext(filename)
-        return os.path.join('media', 'images', user_folder, str(predicted_pk) + ext)    
+        return os.path.join('media', 'images', user_folder, self.get_file_name(filename) + ext)    
     
     
     def save(self, *args, **kwargs):
@@ -109,7 +114,7 @@ class AttachedImage(ReplaceOldImageModel):
             related_images.update(is_main=False)
         if not self.pk:
             self.order = self._get_next_pk()
-        super(AttachedImage, self).save(*args, **kwargs)           
+        super(AttachedImage, self).save(*args, **kwargs)         
         image_saved.send(sender = self.content_type.model_class(), instance = self)
         
         
