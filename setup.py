@@ -9,7 +9,7 @@ setup(
       url='http://bitbucket.org/kmike/django-generic-images/',      
       
       description = 'Generic images pluggable django app',
-      long_description = "This app provides image model (with useful managers and methods) that can be attached to any other Django model using generic relations. ",
+      long_description = "This app provides image model (with useful managers, methods and fields) that can be attached to any other Django model using generic relations. ",
       license = 'MIT license',
       packages=['generic_images', 'generic_utils'],
       package_data={'generic_images': ['locale/en/LC_MESSAGES/*','locale/ru/LC_MESSAGES/*']},      

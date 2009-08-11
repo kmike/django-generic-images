@@ -10,6 +10,7 @@ from django.contrib.contenttypes.generic import GenericTabularInline, GenericFor
 from django.utils.translation import ugettext_lazy as _
 
 from generic_utils.injector import GenericInjector
+from generic_images.signals import image_saved, image_deleted
 
 
 class ReplaceOldImageModel(models.Model):
@@ -83,6 +84,7 @@ class AttachedImage(ReplaceOldImageModel):
     
     
     def _get_next_pk(self):
+        ''' Ugly method. Maybe unique hash will be better? '''
         max_pk = AttachedImage.objects.aggregate(max_pk=Max('pk'))['max_pk'] or 0
         return max_pk+1
     
@@ -107,8 +109,14 @@ class AttachedImage(ReplaceOldImageModel):
             related_images.update(is_main=False)
         if not self.pk:
             self.order = self._get_next_pk()
-        super(AttachedImage, self).save(*args, **kwargs)        
-    
+        super(AttachedImage, self).save(*args, **kwargs)           
+        image_saved.send(sender = self.content_type.model_class(), instance = self)
+        
+        
+    def delete(self, *args, **kwargs):
+        image_deleted.send(sender = self.content_type.model_class(), instance = self)
+        super(AttachedImage, self).delete(*args, **kwargs)            
+        
         
     def __unicode__(self):
         try:

@@ -9,7 +9,7 @@ class ViewTest(TestCase):
     '''
     TestCase for view testing
     '''
-            
+                    
     def setUp(self):
         """This method is automatically called by the Django test framework."""
         self.client = Client()
