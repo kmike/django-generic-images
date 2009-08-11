@@ -15,7 +15,6 @@ setup(
       package_data={'generic_images': ['locale/en/LC_MESSAGES/*','locale/ru/LC_MESSAGES/*']},      
       
       requires = ['django (>=1.1)'],
-      install_requires=['django-composition >= 0.20'],
       
       classifiers=(
           'Development Status :: 3 - Alpha',

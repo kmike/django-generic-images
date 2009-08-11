@@ -25,6 +25,9 @@ $ python setup.py install
 Then add 'generic_images' to your INSTALLED_APPS in settings.py and run 
 $ manage.py syncdb
 
+For django-composition installation follow instructions at 
+http://bitbucket.org/daevaorn/django-composition/src/
+
 = Provided models =
 
 == AttachedImage ==
