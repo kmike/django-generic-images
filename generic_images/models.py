@@ -12,12 +12,11 @@ from django.utils.translation import ugettext_lazy as _
 
 from generic_utils.injector import GenericInjector
 from generic_images.signals import image_saved, image_deleted
+from generic_images.managers import AttachedImageManager
 
 
-class ReplaceOldImageModel(models.Model):
-    '''
-        Abstract Model class with image field.
-        If the file for image is re-uploaded, old file is deleted.
+class BaseImageModel(models.Model):
+    ''' Simple abstract Model class with image field.
     '''
     
     def get_upload_path(self, filename):
@@ -29,16 +28,33 @@ class ReplaceOldImageModel(models.Model):
         return self.get_upload_path(filename)
 
     image = models.ImageField(_('Image'), upload_to=_upload_path_wrapper)
+    
+    class Meta:
+        abstract = True
+
+
+
+class ReplaceOldImageModel(BaseImageModel):
+    '''
+        Abstract Model class with image field.
+        If the file for image is re-uploaded, old file is deleted.
+    '''
+    
+    def _replace_old_image(self):
+        ''' Override this in subclass if you don't want
+            image replacing or want to customize image replacing
+        '''
+        try:
+            old_obj = self.__class__.objects.get(pk=self.pk)
+            if old_obj.image.path != self.image.path:
+                path = old_obj.image.path
+                default_storage.delete(path)
+        except self.__class__.DoesNotExist:
+            pass
 
     def save(self, *args, **kwargs):
         if self.pk:
-            try:
-                old_obj = self.__class__.objects.get(pk=self.pk)
-                if old_obj.image.path != self.image.path:
-                    path = old_obj.image.path
-                    default_storage.delete(path)
-            except self.__class__.DoesNotExist:
-                pass
+            self._replace_old_image()
         super(ReplaceOldImageModel, self).save(*args, **kwargs)
 
     class Meta:
@@ -46,29 +62,12 @@ class ReplaceOldImageModel(models.Model):
         
                                 
         
-class AttachedImageManager(models.Manager):
-    ''' Manager with helpful functions for attached images
-    '''
-    def get_for_model(self, model):
-        ''' Returns all images that are attached to given model '''
-        content_type = ContentType.objects.get_for_model(model)
-        images = self.get_query_set().filter(content_type=content_type, object_id=model.pk)
-        return images
-            
-    def get_main_for(self, model):
-        ''' Returns main image for given model '''
-        try:
-            return self.get_for_model(model).get(is_main=True)
-        except AttachedImage.DoesNotExist:
-            return None
-            
 
-class AttachedImage(ReplaceOldImageModel):
+class AbstractAttachedImage(ReplaceOldImageModel):
     '''
-        Image model that can be attached to any other Django model using 
-        generic relations. 
-    '''
-    
+        Abstract Image model that can be attached to any other Django model using 
+        generic relations.
+    '''    
     user = models.ForeignKey(User, blank=True, null=True, verbose_name=_('User'))
 
     content_type = models.ForeignKey(ContentType)
@@ -85,14 +84,14 @@ class AttachedImage(ReplaceOldImageModel):
     
     
     def _get_next_pk(self):
-        max_pk = AttachedImage.objects.aggregate(max_pk=Max('pk'))['max_pk'] or 0
+        max_pk = self.__class__.objects.aggregate(max_pk=Max('pk'))['max_pk'] or 0
         return max_pk+1
 
 
     def get_file_name(self, filename):
 #        alphabet = "1234567890abcdefghijklmnopqrstuvwxyz"        
 #        return ''.join([random.choice(alphabet) for i in xrange(16)]) # 1e25 variants
-        return str(self._get_next_pk())
+        return str(self._get_next_pk()) # anyway _get_next_pk is needed for setting `order` field
     
         
     def get_upload_path(self, filename):
@@ -109,18 +108,18 @@ class AttachedImage(ReplaceOldImageModel):
     
     def save(self, *args, **kwargs):
         if self.is_main:
-            related_images = AttachedImage.objects.filter(content_type=self.content_type, 
+            related_images = self.__class__.objects.filter(content_type=self.content_type, 
                                                           object_id=self.object_id)
             related_images.update(is_main=False)
         if not self.pk:
             self.order = self._get_next_pk()
-        super(AttachedImage, self).save(*args, **kwargs)         
+        super(AbstractAttachedImage, self).save(*args, **kwargs)         
         image_saved.send(sender = self.content_type.model_class(), instance = self)
         
         
     def delete(self, *args, **kwargs):
         image_deleted.send(sender = self.content_type.model_class(), instance = self)
-        super(AttachedImage, self).delete(*args, **kwargs)            
+        super(AbstractAttachedImage, self).delete(*args, **kwargs)            
         
         
     def __unicode__(self):
@@ -134,12 +133,21 @@ class AttachedImage(ReplaceOldImageModel):
                 return u"AttachedImage #%d" % (self.pk)
             except TypeError:
                 return u"new AttachedImage"
-            
-            
+                        
+    class Meta:
+        abstract=True
+        
+
+
+class AttachedImage(AbstractAttachedImage):
+    '''
+        Image model that can be attached to any other Django model using 
+        generic relations.
+    '''    
     class Meta:
         ordering = ['-order']
-        
-        
+
+
 class AttachedImageInline(GenericTabularInline):
     model = AttachedImage
 
