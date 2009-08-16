@@ -14,6 +14,7 @@ generic_utils/injector.py
 generic_utils/managers.py
 generic_utils/templatetags.py
 generic_utils/test_helpers.py
+generic_utils/models.py
 generic_images/locale/en/LC_MESSAGES/django.mo
 generic_images/locale/en/LC_MESSAGES/django.po
 generic_images/locale/ru/LC_MESSAGES/django.mo

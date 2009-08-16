@@ -10,9 +10,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericTabularInline, GenericForeignKey
 from django.utils.translation import ugettext_lazy as _
 
-from generic_utils.injector import GenericInjector
 from generic_images.signals import image_saved, image_deleted
 from generic_images.managers import AttachedImageManager
+from generic_utils.models import GenericModelBase
 
 
 class BaseImageModel(models.Model):
@@ -60,28 +60,21 @@ class ReplaceOldImageModel(BaseImageModel):
     class Meta:
         abstract = True
         
-                                
-        
+                            
 
-class AbstractAttachedImage(ReplaceOldImageModel):
+class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
     '''
         Abstract Image model that can be attached to any other Django model using 
         generic relations.
     '''    
     user = models.ForeignKey(User, blank=True, null=True, verbose_name=_('User'))
-
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey()
     
     caption = models.TextField(_('Caption'), null=True, blank=True)
     is_main = models.BooleanField(_('Main image'), default=False)
     
     order = models.IntegerField(_('Order'), default=0)
 
-    objects = AttachedImageManager()
-    injector = GenericInjector()        
-    
+    objects = AttachedImageManager()    
     
     def _get_next_pk(self):
         max_pk = self.__class__.objects.aggregate(max_pk=Max('pk'))['max_pk'] or 0
