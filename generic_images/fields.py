@@ -50,9 +50,10 @@ class UserImageCountField(CompositionField):
 #    def __init__(self, native=None, signal=None):
 #        
 #        def get_field_value(model, image, signal):
-#            # we need to handle situation where the field with same name exists in model
-#            # but it is not this ImageCountField
-#            
+##             we need to handle situation where the field with same name exists in model
+##             but it is not this ImageCountField
+#            if model is None:
+#                return
 #            ctype = ContentType.objects.get_for_model(self._composition_meta.model)
 #            model_ctype = ContentType.objects.get_for_model(model)                        
 #            if ctype==model_ctype:
@@ -61,6 +62,7 @@ class UserImageCountField(CompositionField):
 #                except AttributeError:
 #                    return None
 #            else:
+#                return 0
 #                return getattr(model, self._composition_meta.name)
 #        
 #        self.internal_init(
@@ -72,4 +74,4 @@ class UserImageCountField(CompositionField):
 #                field_holder_getter = lambda image: image.content_object
 #            )
 #        )
-        
+#        

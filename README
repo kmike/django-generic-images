@@ -82,7 +82,7 @@ so old files are never deleted.
 
 It is default manager with helpful functions for attached images. Methods:
 
-* get_for_model(model) - Returns all images that are attached to given model            
+* for_model(model) - Returns all images that are attached to given model            
 * get_main_for(model) - Returns main image for given model
 
 	    	

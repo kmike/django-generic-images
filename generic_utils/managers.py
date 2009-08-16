@@ -2,25 +2,22 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
-from generic_images.models import AttachedImage
-                
-                
-class ImagesAndUserManager(models.Manager):
     
-    def select_with_main_images(self, limit=None, **kwargs):
-        ''' Select all objects with filters passed as kwargs.   
-            For each object it's main image instance is accessible as ``object.main_image``.
-            Results can be limited using ``limit`` parameter.
-            Selection is performed using only 2 or 3 sql queries.            
-        '''
-        objects = self.get_query_set().filter(**kwargs)[:limit]
-        AttachedImage.injector.inject_to(objects,'main_image', is_main=True)
-        return objects
+class GenericModelManager(models.Manager):
+    """ Manager with for_model method.  """    
     
-    def for_user_with_main_images(self, user, limit=None):
-        return self.select_with_main_images(user=user, limit=limit)
-            
-    def get_for_user(self, user):
-        objects = self.get_query_set().filter(user=user)
+    def __init__(self, ct_field="content_type", fk_field="object_id"):
+        self.ct_field = ct_field
+        self.fk_field = fk_field
+    
+    def for_model(self, model):
+        ''' Returns all objects that are attached to given model '''
+        content_type = ContentType.objects.get_for_model(model)
+        kwargs = {
+                    self.ct_field: content_type, 
+                    self.fk_field: model.pk
+                 }
+        objects = self.get_query_set().filter(**kwargs)
         return objects
-                            
+                    
+                
