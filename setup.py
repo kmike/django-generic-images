@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
       name='django-generic-images',
-      version='0.26',
+      version='0.27',
       author='Mikhail Korobov',
       author_email='kmike84@gmail.com',
       url='http://bitbucket.org/kmike/django-generic-images/',      

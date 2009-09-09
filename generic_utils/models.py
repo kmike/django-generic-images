@@ -18,7 +18,7 @@ class GenericModelBase(models.Model):
         abstract=True
         
 
-# untested        
+# untested
 class TrueGenericModelBase(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.TextField()
