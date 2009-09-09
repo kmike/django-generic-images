@@ -4,16 +4,8 @@ from django.contrib.contenttypes.models import ContentType
 
 
 def _pop_data_from_kwargs(kwargs):
-    try:
-        ct_field = kwargs.pop('ct_field')
-    except KeyError:
-        ct_field = 'content_type'
-
-    try:
-        fk_field = kwargs.pop('fk_field')
-    except KeyError:
-        fk_field = 'object_id'
-
+    ct_field = kwargs.pop('ct_field', 'content_type')
+    fk_field = kwargs.pop('fk_field', 'object_id')
     return ct_field, fk_field
     
 
