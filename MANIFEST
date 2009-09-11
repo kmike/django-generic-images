@@ -1,4 +1,5 @@
 README
+AUTHORS
 setup.py
 generic_images/__init__.py
 generic_images/admin.py
