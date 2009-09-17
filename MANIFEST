@@ -20,3 +20,7 @@ generic_images/locale/en/LC_MESSAGES/django.mo
 generic_images/locale/en/LC_MESSAGES/django.po
 generic_images/locale/ru/LC_MESSAGES/django.mo
 generic_images/locale/ru/LC_MESSAGES/django.po
+docs/conf.py
+docs/index.rst
+docs/make.bat
+docs/Makefile
