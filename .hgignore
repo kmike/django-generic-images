@@ -29,6 +29,9 @@ Thumbs.db
 stuff/
 generic_images/migrations
 
+#doc files
+docs/_build/doctrees/
+
 #setup files
 build/
 dist/

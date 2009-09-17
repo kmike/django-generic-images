@@ -1,0 +1,548 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>django-generic-images’s documentation &mdash; django-generic-images v0.29 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.29',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="django-generic-images v0.29 documentation" href="" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li><a href="">django-generic-images v0.29 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <ul class="simple">
+</ul>
+<div class="section" id="django-generic-images-s-documentation">
+<h1>django-generic-images&#8217;s documentation<a class="headerlink" href="#django-generic-images-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>django-generic-images is a generic images pluggable django app.</p>
+<p>This app provides image model (with useful managers, methods and fields)
+that can be attached to any other Django model using generic relations.</p>
+<p>Requirements: django 1.1 (or trunk).</p>
+<p>django-composition is required if you want to use ImageCountField or
+UserImageCountField.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>$ easy_install django-generic-images</pre>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>$ hg clone http://bitbucket.org/kmike/django-generic-images/
+$ cd django-generic-images
+$ python setup.py install</pre>
+</div>
+<p>Then add &#8216;generic_images&#8217; to your INSTALLED_APPS in settings.py and run</p>
+<div class="highlight-python"><pre>$ manage.py syncdb</pre>
+</div>
+<p>For django-composition installation follow instructions at
+<a class="reference" href="http://bitbucket.org/daevaorn/django-composition/src/">http://bitbucket.org/daevaorn/django-composition/src/</a></p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generic-images">
+<h3>Generic Images<a class="headerlink" href="#generic-images" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-generic_images.models">
+<h4>Models<a class="headerlink" href="#module-generic_images.models" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="generic_images.models.AbstractAttachedImage">
+<em class="property">
+class </em><tt class="descclassname">generic_images.models.</tt><tt class="descname">AbstractAttachedImage</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="generic_images.models.ReplaceOldImageModel" class="reference" href="#generic_images.models.ReplaceOldImageModel"><tt class="xref docutils literal"><span class="pre">generic_images.models.ReplaceOldImageModel</span></tt></a>, <tt class="xref docutils literal"><span class="pre">generic_utils.models.GenericModelBase</span></tt></p>
+<p>Abstract Image model that can be attached to any other Django model using 
+generic relations.</p>
+<dl class="attribute">
+<dt id="generic_images.models.AbstractAttachedImage.content_object">
+<tt class="descname">content_object</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.content_object" title="Permalink to this definition">¶</a></dt>
+<dd>Provides a generic relation to any object through content-type/object-id
+fields.</dd></dl>
+
+<dl class="attribute">
+<dt id="generic_images.models.AbstractAttachedImage.content_type">
+<tt class="descname">content_type</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.content_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="generic_images.models.AbstractAttachedImage.get_file_name">
+<tt class="descname">get_file_name</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.get_file_name" title="Permalink to this definition">¶</a></dt>
+<dd>Returns file name (without path and extenstion) 
+for uploaded image. Default is &#8216;max(pk)+1&#8217;. 
+Override this in subclass if you want different file names.</dd></dl>
+
+<dl class="method">
+<dt id="generic_images.models.AbstractAttachedImage.get_upload_path">
+<tt class="descname">get_upload_path</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.get_upload_path" title="Permalink to this definition">¶</a></dt>
+<dd>Override this in proxy subclass to customize upload path.
+Default upload path is <tt class="docutils literal"><span class="pre">/media/images/&lt;user.id&gt;/&lt;filename&gt;.&lt;ext&gt;</span></tt>
+or <tt class="docutils literal"><span class="pre">/media/images/common/&lt;filename&gt;.&lt;ext&gt;</span></tt> if user is not set.
+filename is returned by get_file_name method.
+By default it is probable id of new image (it is
+predicted as it is unknown at this stage).</dd></dl>
+
+<dl class="method">
+<dt id="generic_images.models.AbstractAttachedImage.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.next" title="Permalink to this definition">¶</a></dt>
+<dd>Returns next image for same content_object and None if image is the last.</dd></dl>
+
+<dl class="method">
+<dt id="generic_images.models.AbstractAttachedImage.previous">
+<tt class="descname">previous</tt><big>(</big><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.previous" title="Permalink to this definition">¶</a></dt>
+<dd>Returns previous image for same content_object and None if image is the first.</dd></dl>
+
+<dl class="attribute">
+<dt id="generic_images.models.AbstractAttachedImage.user">
+<tt class="descname">user</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="generic_images.models.AttachedImage">
+<em class="property">
+class </em><tt class="descclassname">generic_images.models.</tt><tt class="descname">AttachedImage</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_images.models.AttachedImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="generic_images.models.AbstractAttachedImage" class="reference" href="#generic_images.models.AbstractAttachedImage"><tt class="xref docutils literal"><span class="pre">generic_images.models.AbstractAttachedImage</span></tt></a></p>
+<p>Image model that can be attached to any other Django model using 
+generic relations.</p>
+<dl class="exception">
+<dt id="generic_images.models.AttachedImage.DoesNotExist">
+<em class="property">
+exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#generic_images.models.AttachedImage.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd>Bases: <tt class="xref docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></tt></dd></dl>
+
+<dl class="exception">
+<dt id="generic_images.models.AttachedImage.MultipleObjectsReturned">
+<em class="property">
+exception </em><tt class="descclassname">AttachedImage.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#generic_images.models.AttachedImage.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd>Bases: <tt class="xref docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></tt></dd></dl>
+
+<dl class="attribute">
+<dt id="generic_images.models.AttachedImage.content_object">
+<tt class="descclassname">AttachedImage.</tt><tt class="descname">content_object</tt><a class="headerlink" href="#generic_images.models.AttachedImage.content_object" title="Permalink to this definition">¶</a></dt>
+<dd>Provides a generic relation to any object through content-type/object-id
+fields.</dd></dl>
+
+<dl class="attribute">
+<dt id="generic_images.models.AttachedImage.content_type">
+<tt class="descclassname">AttachedImage.</tt><tt class="descname">content_type</tt><a class="headerlink" href="#generic_images.models.AttachedImage.content_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="generic_images.models.AttachedImage.user">
+<tt class="descclassname">AttachedImage.</tt><tt class="descname">user</tt><a class="headerlink" href="#generic_images.models.AttachedImage.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="generic_images.models.AttachedImageInline">
+<em class="property">
+class </em><tt class="descclassname">generic_images.models.</tt><tt class="descname">AttachedImageInline</tt><big>(</big><em>parent_model</em>, <em>admin_site</em><big>)</big><a class="headerlink" href="#generic_images.models.AttachedImageInline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">django.contrib.contenttypes.generic.GenericTabularInline</span></tt></p>
+<dl class="attribute">
+<dt id="generic_images.models.AttachedImageInline.model">
+<tt class="descname">model</tt><a class="headerlink" href="#generic_images.models.AttachedImageInline.model" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="generic_images.models.AttachedImage" class="reference" href="#generic_images.models.AttachedImage"><tt class="xref docutils literal"><span class="pre">AttachedImage</span></tt></a></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="generic_images.models.BaseImageModel">
+<em class="property">
+class </em><tt class="descclassname">generic_images.models.</tt><tt class="descname">BaseImageModel</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_images.models.BaseImageModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Simple abstract Model class with image field.</p>
+<dl class="method">
+<dt id="generic_images.models.BaseImageModel.get_upload_path">
+<tt class="descname">get_upload_path</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#generic_images.models.BaseImageModel.get_upload_path" title="Permalink to this definition">¶</a></dt>
+<dd>Override this to customize upload path</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="generic_images.models.ReplaceOldImageModel">
+<em class="property">
+class </em><tt class="descclassname">generic_images.models.</tt><tt class="descname">ReplaceOldImageModel</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_images.models.ReplaceOldImageModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="generic_images.models.BaseImageModel" class="reference" href="#generic_images.models.BaseImageModel"><tt class="xref docutils literal"><span class="pre">generic_images.models.BaseImageModel</span></tt></a></p>
+<p>Abstract Model class with image field.
+If the file for image is re-uploaded, old file is deleted.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-generic_images.forms">
+<h4>Forms<a class="headerlink" href="#module-generic_images.forms" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="generic_images.forms.AttachedImageForm">
+<em class="property">
+class </em><tt class="descclassname">generic_images.forms.</tt><tt class="descname">AttachedImageForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id='id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="headerlink" href="#generic_images.forms.AttachedImageForm" title="Permalink to this definition">¶</a></dt>
+<dd>Basic form for AttachedImage model</dd></dl>
+
+</div>
+<div class="section" id="module-generic_images.fields">
+<h4>Fields for denormalisation<a class="headerlink" href="#module-generic_images.fields" title="Permalink to this headline">¶</a></h4>
+<p>django-generic-images provides fields for storing information about 
+attached images count. Value is stored in model that images are 
+attached to. Value is updated automatically when image is saved or deleted.
+Access to this value is much faster than additional &#8220;count()&#8221; queries.</p>
+<dl class="class">
+<dt id="generic_images.fields.ImageCountField">
+<em class="property">
+class </em><tt class="descclassname">generic_images.fields.</tt><tt class="descname">ImageCountField</tt><big>(</big><em>native=None</em><big>)</big><a class="headerlink" href="#generic_images.fields.ImageCountField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Field with model&#8217;s attached images count.
+Value of this field is updated automatically when 
+image is added or removed. Access to this field
+doesn&#8217;t produce additional &#8216;select count(*)&#8217; query,
+data is stored in table.</p>
+<p>Example 1:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">generic_images.fields</span> <span class="kn">import</span> <span class="n">ImageCountField</span>
+
+<span class="k">class</span> <span class="nc">MyModel1</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c">#... fields definitions</span>
+    <span class="n">image_count</span> <span class="o">=</span> <span class="n">ImageCountField</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Example 2:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyModel2</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c">#... fields definitions</span>
+    <span class="n">image_count</span> <span class="o">=</span> <span class="n">ImageCountField</span><span class="p">(</span><span class="n">native</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s">u&#39;MyModel2 Images count&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="generic_images.fields.UserImageCountField">
+<em class="property">
+class </em><tt class="descclassname">generic_images.fields.</tt><tt class="descname">UserImageCountField</tt><big>(</big><em>native=None</em>, <em>user_attr='user'</em><big>)</big><a class="headerlink" href="#generic_images.fields.UserImageCountField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Field that should be put into user&#8217;s profile (AUTH_PROFILE_MODULE). 
+It will contain number of images that are attached to corresponding User.</p>
+<p>This field is useful when you want to use something like ImageCountField
+for User model. It is not possible to add a field to User model without 
+duck punching (monkey patching). UserImageCountField should be 
+put into user&#8217;s profile (same model as defined in AUTH_PROFILE_MODULE). 
+It will contain number of images that are attached to corresponding User.
+FK attribute to User model is considered <cite>user</cite> by default, but this 
+can be overrided using <cite>user_attr</cite> argument to UserImageCountField 
+constructor. As with ImageCountField, UserImageCountField constructor 
+accepts also <cite>native</cite> argument - an underlying field.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-generic_images.context_processors">
+<h4>Context processors<a class="headerlink" href="#module-generic_images.context_processors" title="Permalink to this headline">¶</a></h4>
+<dl class="function">
+<dt id="generic_images.context_processors.thumbnail_types">
+<tt class="descclassname">generic_images.context_processors.</tt><tt class="descname">thumbnail_types</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#generic_images.context_processors.thumbnail_types" title="Permalink to this definition">¶</a></dt>
+<dd>A context processor to add possible thumbnail sizes to the current Context.
+Useful for managing possible sorl.thumbnails thumbnail&#8217;s sizes</dd></dl>
+
+</div>
+</div>
+<div class="section" id="generic-utils">
+<h3>Generic Utils<a class="headerlink" href="#generic-utils" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-generic_utils.app_utils">
+<h4>Pluggable app utils<a class="headerlink" href="#module-generic_utils.app_utils" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="generic_utils.app_utils.PluggableSite">
+<em class="property">
+class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>queryset</em>, <em>app_name</em>, <em>object_regex='\d+'</em>, <em>lookup_field='pk'</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c09870&gt;</em>, <em>context_processors=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for reusable apps. 
+The approach is similar to django AdminSite.
+For usage case please check photo_albums app.</p>
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.check_permissions">
+<tt class="descname">check_permissions</tt><big>(</big><em>request</em>, <em>object</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.check_permissions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.get_common_context">
+<tt class="descname">get_common_context</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.get_common_context" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.get_object">
+<tt class="descname">get_object</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.get_object" title="Permalink to this definition">¶</a></dt>
+<dd>If one positioned argument is given it is used as
+a value for lookup with key=self.lookup_field (&#8216;pk&#8217;
+by default). If keyword arguments are given they are
+passed as queryset&#8217;s get lookup parameters.</dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.get_object_and_context">
+<tt class="descname">get_object_and_context</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.get_object_and_context" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.get_object_or_404">
+<tt class="descname">get_object_or_404</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.get_object_or_404" title="Permalink to this definition">¶</a></dt>
+<dd>If one positioned argument is given it is used as
+a value for lookup with key=self.lookup_field (&#8216;pk&#8217;
+by default). If keyword arguments are given they are
+passed as queryset&#8217;s get lookup parameters. If no object
+is found Http404 exception is raised.</dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.make_regex">
+<tt class="descname">make_regex</tt><big>(</big><em>url</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.make_regex" title="Permalink to this definition">¶</a></dt>
+<dd>Make regex string for PluggableSite urlpatterns: prepend url
+with parent object&#8217;s url and app name.
+See also: <a class="reference" href="http://code.djangoproject.com/ticket/11559">http://code.djangoproject.com/ticket/11559</a>.</dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.patterns">
+<tt class="descname">patterns</tt><big>(</big><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.patterns" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method should return url patterns 
+(like urlpatterns variable in urls.py).
+It is helpful to construct regex with make_regex method.
+Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;photo_albums.views&#39;</span><span class="p">,</span>                                
+                    <span class="n">url</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">make_regex</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">),</span>
+                        <span class="s">&#39;show_album&#39;</span><span class="p">,</span>
+                        <span class="p">{</span><span class="s">&#39;album_site&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">},</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;show_album&#39;</span><span class="p">,</span>
+                    <span class="p">),</span>
+               <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.app_utils.PluggableSite.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>url</em>, <em>args=None</em>, <em>kwargs=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.reverse" title="Permalink to this definition">¶</a></dt>
+<dd>Reverse an url taking self.app_name in account</dd></dl>
+
+<dl class="attribute">
+<dt id="generic_utils.app_utils.PluggableSite.urls">
+<tt class="descname">urls</tt><a class="headerlink" href="#generic_utils.app_utils.PluggableSite.urls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use it in urls.py.
+Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">+=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^my_site/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">my_pluggable_site</span><span class="o">.</span><span class="n">urls</span><span class="p">)),)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-generic_utils.managers">
+<h4>Generic relation helpers<a class="headerlink" href="#module-generic_utils.managers" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="generic_utils.managers.GenericInjector">
+<em class="property">
+class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="descname">GenericInjector</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Manager for selecting all generic-related objects in one (two) SQL queries.</dt>
+<dd><p class="first">Selection is performed for a list of objects. Resulting data is aviable as attribute 
+of original model. Only one instance per object can be selected. Example usage: 
+select (and make acessible as user.avatar) all avatars for a list of user when 
+avatars are AttachedImage&#8217;s attached to User model with is_main=True attributes.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">generic_images.models</span> <span class="kn">import</span> <span class="n">AttachedImage</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[:</span><span class="mf">10</span><span class="p">]</span>
+<span class="n">AttachedImage</span><span class="o">.</span><span class="n">injector</span><span class="o">.</span><span class="n">inject_to</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="s">&#39;avatar&#39;</span><span class="p">,</span> <span class="n">is_main</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>    
+
+<span class="c"># i=0..9: users[i].avatar is AttachedImage objects with is_main=True. </span>
+<span class="c"># If there is no such AttachedImage (user doesn&#39;t have an avatar), </span>
+<span class="c"># users[i].avatar is None</span>
+</pre></div>
+</div>
+<dl class="last docutils">
+<dt>For this example 2 or 3 sql queries will be executed:</dt>
+<dd><ol class="first last arabic simple">
+<li>one query for selecting 10 users,</li>
+<li>one query for selecting all avatars (images with is_main=True) for selected users</li>
+<li>and maybe one query for selecting content-type for User model</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>One can reuse GenericInjector manager for other models that are supposed to 
+be attached via generic relationship. It can be considered as an addition to 
+GFKmanager and GFKQuerySet from djangosnippets for different use cases.</p>
+<dl class="method">
+<dt id="generic_utils.managers.GenericInjector.inject_to">
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a0c9b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances) </dt>
+<dd>will be attached to elements of this iterable.</dd>
+</dl>
+<p><tt class="docutils literal"><span class="pre">field_name</span></tt> is the attached object attribute name</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">get_injector_object</span></tt> is a callable that takes object in <cite>objects</cite> iterable.</dt>
+<dd>Image will be available as an attribute of the result of 
+<cite>get_injector_object(object)</cite>. Images attached to <cite>get_injector_object(object)</cite>
+will be selected.</dd>
+</dl>
+<p>All other kwargs will be passed as arguments to queryset filter function.</p>
+<p>Example: you have a list of comments. Each comment has &#8216;user&#8217; attribute. 
+You want to fetch 10 comments and their authors with avatars. Avatars should 
+be accessible as <cite>user.avatar</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">comments</span> <span class="o">=</span> <span class="n">Comment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">)[:</span><span class="mf">10</span><span class="p">]</span>
+<span class="n">AttachedImage</span><span class="o">.</span><span class="n">injector</span><span class="o">.</span><span class="n">inject_to</span><span class="p">(</span><span class="n">comments</span><span class="p">,</span> <span class="s">&#39;avatar&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">is_main</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>   
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="generic_utils.managers.GenericModelManager">
+<em class="property">
+class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="descname">GenericModelManager</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericModelManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manager with for_model method.</p>
+<dl class="method">
+<dt id="generic_utils.managers.GenericModelManager.for_model">
+<tt class="descname">for_model</tt><big>(</big><em>model</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericModelManager.for_model" title="Permalink to this definition">¶</a></dt>
+<dd>Returns all objects that are attached to given model</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-generic_utils.templatetags">
+<h4>Template tag helpers<a class="headerlink" href="#module-generic_utils.templatetags" title="Permalink to this headline">¶</a></h4>
+<dl class="exception">
+<dt id="generic_utils.templatetags.InvalidParamsError">
+<em class="property">
+exception </em><tt class="descclassname">generic_utils.templatetags.</tt><tt class="descname">InvalidParamsError</tt><a class="headerlink" href="#generic_utils.templatetags.InvalidParamsError" title="Permalink to this definition">¶</a></dt>
+<dd>Custom exception class to distinguish usual TemplateSyntaxErrors 
+and validation errors for templatetags introduced by <tt class="docutils literal"><span class="pre">validate_params</span></tt>
+function</dd></dl>
+
+<dl class="function">
+<dt id="generic_utils.templatetags.validate_params">
+<tt class="descclassname">generic_utils.templatetags.</tt><tt class="descname">validate_params</tt><big>(</big><em>bits</em>, <em>arguments_count</em>, <em>keyword_positions</em><big>)</big><a class="headerlink" href="#generic_utils.templatetags.validate_params" title="Permalink to this definition">¶</a></dt>
+<dd>Raises exception if passed params (<cite>bits</cite>) do not match signature.
+Signature is defined by <cite>arguments_count</cite> (acceptible number of params) and
+keyword_positions (dictionary with positions in keys and keywords in values,
+for ex. {2:&#8217;by&#8217;, 4:&#8217;of&#8217;, 5:&#8217;type&#8217;, 7:&#8217;as&#8217;}).</dd></dl>
+
+</div>
+<div class="section" id="module-generic_utils.test_helpers">
+<h4>Test helpers<a class="headerlink" href="#module-generic_utils.test_helpers" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="generic_utils.test_helpers.ViewTest">
+<em class="property">
+class </em><tt class="descclassname">generic_utils.test_helpers.</tt><tt class="descname">ViewTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="headerlink" href="#generic_utils.test_helpers.ViewTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>TestCase for view testing</p>
+<dl class="method">
+<dt id="generic_utils.test_helpers.ViewTest.check_login_required">
+<tt class="descname">check_login_required</tt><big>(</big><em>url_name</em>, <em>kwargs=None</em>, <em>current_app=None</em><big>)</big><a class="headerlink" href="#generic_utils.test_helpers.ViewTest.check_login_required" title="Permalink to this definition">¶</a></dt>
+<dd>Check if response is a redirect to login page (ignoring GET variables)</dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.test_helpers.ViewTest.check_url">
+<tt class="descname">check_url</tt><big>(</big><em>url_name</em>, <em>status=200</em>, <em>kwargs=None</em>, <em>current_app=None</em><big>)</big><a class="headerlink" href="#generic_utils.test_helpers.ViewTest.check_url" title="Permalink to this definition">¶</a></dt>
+<dd>check_url a URL and require a specific status code before proceeding</dd></dl>
+
+<dl class="method">
+<dt id="generic_utils.test_helpers.ViewTest.setUp">
+<tt class="descname">setUp</tt><big>(</big><big>)</big><a class="headerlink" href="#generic_utils.test_helpers.ViewTest.setUp" title="Permalink to this definition">¶</a></dt>
+<dd>This method is automatically called by the Django test framework.</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference" href="">django-generic-images&#8217;s documentation</a><ul>
+<li><a class="reference" href="#installation">Installation</a></li>
+<li><a class="reference" href="#usage">Usage</a><ul>
+<li><a class="reference" href="#generic-images">Generic Images</a><ul>
+<li><a class="reference" href="#module-generic_images.models">Models</a></li>
+<li><a class="reference" href="#module-generic_images.forms">Forms</a></li>
+<li><a class="reference" href="#module-generic_images.fields">Fields for denormalisation</a></li>
+<li><a class="reference" href="#module-generic_images.context_processors">Context processors</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#generic-utils">Generic Utils</a><ul>
+<li><a class="reference" href="#module-generic_utils.app_utils">Pluggable app utils</a></li>
+<li><a class="reference" href="#module-generic_utils.managers">Generic relation helpers</a></li>
+<li><a class="reference" href="#module-generic_utils.templatetags">Template tag helpers</a></li>
+<li><a class="reference" href="#module-generic_utils.test_helpers">Test helpers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/index.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li><a href="">django-generic-images v0.29 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Mikhail Korobov.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+    </div>
+  </body>
+</html>

@@ -67,6 +67,7 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
         Abstract Image model that can be attached to any other Django model using 
         generic relations.
     '''    
+    
     user = models.ForeignKey(User, blank=True, null=True, verbose_name=_('User'))
     
     caption = models.TextField(_('Caption'), null=True, blank=True)
@@ -74,14 +75,33 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
     
     order = models.IntegerField(_('Order'), default=0)
 
-    objects = AttachedImageManager()    
+    objects = AttachedImageManager()          
     
+    def next(self):
+        ''' Returns next image for same content_object and None if image is the last. '''
+        try:
+            return self.__class__.objects.for_model(self.content_object).filter(order__lt=self.order).order_by('-order')[0]
+        except IndexError:
+            return None
+    
+    def previous(self):
+        ''' Returns previous image for same content_object and None if image is the first. '''
+        try:    
+            return self.__class__.objects.for_model(self.content_object).filter(order__gt=self.order).order_by('order')[0]
+        except IndexError:
+            return None
+                
+
     def _get_next_pk(self):
         max_pk = self.__class__.objects.aggregate(max_pk=Max('pk'))['max_pk'] or 0
         return max_pk+1
+    
 
-
-    def get_file_name(self, filename):
+    def get_file_name(self, filename):        
+        ''' Returns file name (without path and extenstion) 
+            for uploaded image. Default is 'max(pk)+1'. 
+            Override this in subclass if you want different file names.
+        '''        
 #        alphabet = "1234567890abcdefghijklmnopqrstuvwxyz"        
 #        return ''.join([random.choice(alphabet) for i in xrange(16)]) # 1e25 variants
         return str(self._get_next_pk()) # anyway _get_next_pk is needed for setting `order` field
@@ -89,9 +109,11 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
         
     def get_upload_path(self, filename):
         ''' Override this in proxy subclass to customize upload path.
-            Default upload path is "/media/images/<user.id>/<image.id>.<ext>"
-            or "/media/images/common/<image.id>.<ext>" if user is not set.
-            image.id is predicted as it is unknown at this stage.
+            Default upload path is ``/media/images/<user.id>/<filename>.<ext>``
+            or ``/media/images/common/<filename>.<ext>`` if user is not set.
+            filename is returned by get_file_name method.
+            By default it is probable id of new image (it is
+            predicted as it is unknown at this stage).
         '''        
         user_folder = str(self.user.pk) if self.user else 'common'        
         
@@ -99,7 +121,7 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
         return os.path.join('media', 'images', user_folder, self.get_file_name(filename) + ext)    
     
     
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):        
         if self.is_main:
             related_images = self.__class__.objects.filter(content_type=self.content_type, 
                                                           object_id=self.object_id)

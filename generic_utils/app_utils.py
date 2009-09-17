@@ -8,7 +8,7 @@ class PluggableSite(object):
     ''' Base class for reusable apps. 
         The approach is similar to django AdminSite.
         For usage case please check photo_albums app.
-    '''
+'''
     def __init__(self, instance_name, queryset, app_name,
                  object_regex = r'\d+', lookup_field = 'pk',
                  extra_context=None, template_object_name = 'object',
@@ -76,7 +76,12 @@ class PluggableSite(object):
         return obj, self.get_common_context(obj)
     
                     
-    def make_regex(self, url):
+    def make_regex(self, url):  
+        ''' 
+            Make regex string for PluggableSite urlpatterns: prepend url
+            with parent object's url and app name.
+            See also: http://code.djangoproject.com/ticket/11559.
+        '''      
         return r"^(?P<object_id>%s)/%s%s$" % (self.object_regex, self.app_name, url)
     
     
@@ -86,14 +91,14 @@ class PluggableSite(object):
             It is helpful to construct regex with make_regex method.
             Example::
             
-            return patterns('photo_albums.views',                                
-                                url(
-                                    self.make_regex('/'),
-                                    'show_album',
-                                    {'album_site': self},
-                                    name = 'show_album',
-                                ),
-                           )
+                return patterns('photo_albums.views',                                
+                                    url(
+                                        self.make_regex('/'),
+                                        'show_album',
+                                        {'album_site': self},
+                                        name = 'show_album',
+                                    ),
+                               )
         '''
         
         raise NotImplementedError
@@ -101,4 +106,10 @@ class PluggableSite(object):
 
     @property
     def urls(self):
+        '''  
+            Use it in urls.py.
+            Example::
+            
+                urlpatterns += patterns('', url(r'^my_site/', include(my_pluggable_site.urls)),)
+        '''
         return self.patterns(), self.app_name, self.instance_name

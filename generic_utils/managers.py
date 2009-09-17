@@ -15,6 +15,29 @@ class GenericInjector(models.Manager):
         of original model. Only one instance per object can be selected. Example usage: 
         select (and make acessible as user.avatar) all avatars for a list of user when 
         avatars are AttachedImage's attached to User model with is_main=True attributes.
+        
+        Example::
+
+            from django.contrib.auth.models import User
+            from generic_images.models import AttachedImage
+            
+            users = User.objects.all()[:10]
+            AttachedImage.injector.inject_to(users, 'avatar', is_main=True)    
+
+            # i=0..9: users[i].avatar is AttachedImage objects with is_main=True. 
+            # If there is no such AttachedImage (user doesn't have an avatar), 
+            # users[i].avatar is None
+
+
+        For this example 2 or 3 sql queries will be executed:
+            1. one query for selecting 10 users,
+            2. one query for selecting all avatars (images with is_main=True) for selected users
+            3. and maybe one query for selecting content-type for User model
+
+One can reuse GenericInjector manager for other models that are supposed to 
+be attached via generic relationship. It can be considered as an addition to 
+GFKmanager and GFKQuerySet from djangosnippets for different use cases.
+        
     '''
     
     def __init__(self, *args, **kwargs):
@@ -23,6 +46,28 @@ class GenericInjector(models.Manager):
         
     
     def inject_to(self, objects, field_name, get_inject_object = lambda obj: obj, **kwargs):
+        '''        
+        ``objects`` is an iterable. Images (or other generic-related model instances) 
+            will be attached to elements of this iterable.
+        
+        ``field_name`` is the attached object attribute name
+        
+        ``get_injector_object`` is a callable that takes object in `objects` iterable.
+            Image will be available as an attribute of the result of 
+            `get_injector_object(object)`. Images attached to `get_injector_object(object)`
+            will be selected.
+        
+        All other kwargs will be passed as arguments to queryset filter function.
+        
+        Example: you have a list of comments. Each comment has 'user' attribute. 
+        You want to fetch 10 comments and their authors with avatars. Avatars should 
+        be accessible as `user.avatar`::
+        
+            comments = Comment.objects.all().select_related('user')[:10]
+            AttachedImage.injector.inject_to(comments, 'avatar', lambda obj: obj.user, is_main=True)   
+        
+        '''
+        
         try:
             content_type = ContentType.objects.get_for_model(get_inject_object(objects[0]))        
         except IndexError:

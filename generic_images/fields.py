@@ -1,4 +1,11 @@
 #coding: utf-8
+'''
+django-generic-images provides fields for storing information about 
+attached images count. Value is stored in model that images are 
+attached to. Value is updated automatically when image is saved or deleted.
+Access to this value is much faster than additional "count()" queries.
+'''
+
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
@@ -14,6 +21,21 @@ class ImageCountField(CompositionField):
         image is added or removed. Access to this field
         doesn't produce additional 'select count(*)' query,
         data is stored in table.    
+        
+        Example 1::
+
+            from generic_images.fields import ImageCountField
+            
+            class MyModel1(models.Model):
+                #... fields definitions
+                image_count = ImageCountField()
+
+        Example 2::
+        
+            class MyModel2(models.Model):
+                #... fields definitions
+                image_count = ImageCountField(native=models.IntegerField(u'MyModel2 Images count', default=0))
+        
     '''
     def __init__(self, native=None):
                         
@@ -30,6 +52,17 @@ class ImageCountField(CompositionField):
 class UserImageCountField(CompositionField):
     """ Field that should be put into user's profile (AUTH_PROFILE_MODULE). 
         It will contain number of images that are attached to corresponding User.
+        
+        This field is useful when you want to use something like ImageCountField
+        for User model. It is not possible to add a field to User model without 
+        duck punching (monkey patching). UserImageCountField should be 
+        put into user's profile (same model as defined in AUTH_PROFILE_MODULE). 
+        It will contain number of images that are attached to corresponding User.
+        FK attribute to User model is considered `user` by default, but this 
+        can be overrided using `user_attr` argument to UserImageCountField 
+        constructor. As with ImageCountField, UserImageCountField constructor 
+        accepts also `native` argument - an underlying field.
+        
     """
     def __init__(self, native=None, user_attr='user'):                        
         
