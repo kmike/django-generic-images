@@ -52,6 +52,9 @@ that can be attached to any other Django model using generic relations.</p>
 UserImageCountField.</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>$ pip install django-generic-images</pre>
+</div>
+<p>or:</p>
 <div class="highlight-python"><pre>$ easy_install django-generic-images</pre>
 </div>
 <p>or:</p>
@@ -59,16 +62,19 @@ UserImageCountField.</p>
 $ cd django-generic-images
 $ python setup.py install</pre>
 </div>
-<p>Then add &#8216;generic_images&#8217; to your INSTALLED_APPS in settings.py and run</p>
+<p>Then add &#8216;generic_images&#8217; to your <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> in settings.py and run</p>
 <div class="highlight-python"><pre>$ manage.py syncdb</pre>
 </div>
-<p>For django-composition installation follow instructions at
-<a class="reference" href="http://bitbucket.org/daevaorn/django-composition/src/">http://bitbucket.org/daevaorn/django-composition/src/</a></p>
+<p>If you want <tt class="docutils literal"><span class="pre">ImageCountField</span></tt> and <tt class="docutils literal"><span class="pre">UserImageCountField</span></tt> then follow
+installation instructions at  <a class="reference" href="http://bitbucket.org/daevaorn/django-composition/">http://bitbucket.org/daevaorn/django-composition/</a>
+to install django-composition.</p>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="generic-images">
 <h3>Generic Images<a class="headerlink" href="#generic-images" title="Permalink to this headline">¶</a></h3>
+<p>The idea is to provide an infrastructure for images that can be attached
+to any django model using generic relations.</p>
 <div class="section" id="module-generic_images.models">
 <h4>Models<a class="headerlink" href="#module-generic_images.models" title="Permalink to this headline">¶</a></h4>
 <dl class="class">
@@ -78,17 +84,6 @@ class </em><tt class="descclassname">generic_images.models.</tt><tt class="descn
 <dd><p>Bases: <a title="generic_images.models.ReplaceOldImageModel" class="reference" href="#generic_images.models.ReplaceOldImageModel"><tt class="xref docutils literal"><span class="pre">generic_images.models.ReplaceOldImageModel</span></tt></a>, <tt class="xref docutils literal"><span class="pre">generic_utils.models.GenericModelBase</span></tt></p>
 <p>Abstract Image model that can be attached to any other Django model using 
 generic relations.</p>
-<dl class="attribute">
-<dt id="generic_images.models.AbstractAttachedImage.content_object">
-<tt class="descname">content_object</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.content_object" title="Permalink to this definition">¶</a></dt>
-<dd>Provides a generic relation to any object through content-type/object-id
-fields.</dd></dl>
-
-<dl class="attribute">
-<dt id="generic_images.models.AbstractAttachedImage.content_type">
-<tt class="descname">content_type</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.content_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="generic_images.models.AbstractAttachedImage.get_file_name">
 <tt class="descname">get_file_name</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.get_file_name" title="Permalink to this definition">¶</a></dt>
@@ -115,6 +110,17 @@ predicted as it is unknown at this stage).</dd></dl>
 <dt id="generic_images.models.AbstractAttachedImage.previous">
 <tt class="descname">previous</tt><big>(</big><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.previous" title="Permalink to this definition">¶</a></dt>
 <dd>Returns previous image for same content_object and None if image is the first.</dd></dl>
+
+<dl class="attribute">
+<dt id="generic_images.models.AbstractAttachedImage.content_object">
+<tt class="descname">content_object</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.content_object" title="Permalink to this definition">¶</a></dt>
+<dd>Provides a generic relation to any object through content-type/object-id
+fields.</dd></dl>
+
+<dl class="attribute">
+<dt id="generic_images.models.AbstractAttachedImage.content_type">
+<tt class="descname">content_type</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.content_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="generic_images.models.AbstractAttachedImage.user">
@@ -270,7 +276,7 @@ Useful for managing possible sorl.thumbnails thumbnail&#8217;s sizes</dd></dl>
 <dl class="class">
 <dt id="generic_utils.app_utils.PluggableSite">
 <em class="property">
-class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>queryset</em>, <em>app_name</em>, <em>object_regex='\d+'</em>, <em>lookup_field='pk'</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c09870&gt;</em>, <em>context_processors=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
+class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>queryset</em>, <em>app_name</em>, <em>object_regex='\d+'</em>, <em>lookup_field='pk'</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c07970&gt;</em>, <em>context_processors=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for reusable apps. 
 The approach is similar to django AdminSite.
 For usage case please check photo_albums app.</p>
@@ -390,7 +396,7 @@ be attached via generic relationship. It can be considered as an addition to
 GFKmanager and GFKQuerySet from djangosnippets for different use cases.</p>
 <dl class="method">
 <dt id="generic_utils.managers.GenericInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a0c9b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a0ea70&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances) </dt>
 <dd>will be attached to elements of this iterable.</dd>

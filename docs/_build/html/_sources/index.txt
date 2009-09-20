@@ -25,7 +25,11 @@ Installation
 ************
 ::
 
-	$ easy_install django-generic-images
+	$ pip install django-generic-images
+
+or::
+
+    $ easy_install django-generic-images
 	
 or::
 
@@ -33,12 +37,13 @@ or::
 	$ cd django-generic-images
 	$ python setup.py install
 
-Then add 'generic_images' to your INSTALLED_APPS in settings.py and run ::
+Then add 'generic_images' to your ``INSTALLED_APPS`` in settings.py and run ::
 
 	$ manage.py syncdb
 
-For django-composition installation follow instructions at 
-http://bitbucket.org/daevaorn/django-composition/src/
+If you want ``ImageCountField`` and ``UserImageCountField`` then follow  
+installation instructions at  http://bitbucket.org/daevaorn/django-composition/
+to install django-composition.
 
 *****
 Usage
@@ -46,6 +51,9 @@ Usage
 
 Generic Images
 ==============
+
+The idea is to provide an infrastructure for images that can be attached
+to any django model using generic relations.
 
 Models
 ------

@@ -27,6 +27,7 @@ class BaseImageModel(models.Model):
     def _upload_path_wrapper(self, filename):
         return self.get_upload_path(filename)
 
+    #: image
     image = models.ImageField(_('Image'), upload_to=_upload_path_wrapper)
     
     class Meta:

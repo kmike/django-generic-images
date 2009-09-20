@@ -8,11 +8,19 @@ from generic_utils.managers import GenericModelManager, GenericInjector
 
 class GenericModelBase(models.Model):
     content_type = models.ForeignKey(ContentType)
+    ''
+    
     object_id = models.PositiveIntegerField()
+    ''
+    
     content_object = GenericForeignKey()
+    ''
 
     objects = GenericModelManager()
+    ''
+    
     injector = GenericInjector()
+    'GenericInjector manager'
 
     class Meta:
         abstract=True
