@@ -52,7 +52,9 @@ class AttachedImageManager(GenericModelManager):
         return self.for_model(model) 
             
     def get_main_for(self, model):
-        ''' Returns main image for given model '''
+        '''
+        Returns main image for given model
+        '''        
         try:
             return self.for_model(model).get(is_main=True)
         except models.ObjectDoesNotExist:

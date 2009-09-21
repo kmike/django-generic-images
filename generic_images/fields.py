@@ -53,15 +53,17 @@ class UserImageCountField(CompositionField):
     """ Field that should be put into user's profile (AUTH_PROFILE_MODULE). 
         It will contain number of images that are attached to corresponding User.
         
-        This field is useful when you want to use something like ImageCountField
-        for User model. It is not possible to add a field to User model without 
-        duck punching (monkey patching). UserImageCountField should be 
+        This field is useful when you want to use something like 
+        :class:`~generic_images.fields.ImageCountField` for ``User`` model. 
+        It is not possible to add a field to User model without 
+        duck punching (monkey patching). ``UserImageCountField`` should be 
         put into user's profile (same model as defined in AUTH_PROFILE_MODULE). 
         It will contain number of images that are attached to corresponding User.
-        FK attribute to User model is considered `user` by default, but this 
-        can be overrided using `user_attr` argument to UserImageCountField 
-        constructor. As with ImageCountField, UserImageCountField constructor 
-        accepts also `native` argument - an underlying field.
+        FK attribute to User model is considered ``'user'`` by default, but this 
+        can be overrided using ``user_attr`` argument to ``UserImageCountField`` 
+        constructor. As with :class:`~generic_images.fields.ImageCountField`, 
+        ``UserImageCountField`` constructor accepts also ``native`` argument - an 
+        underlying field.
         
     """
     def __init__(self, native=None, user_attr='user'):                        

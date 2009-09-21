@@ -5,7 +5,7 @@ from generic_images.models import AttachedImage
 
 
 class AttachedImageForm(ModelForm):    
-    ''' Basic form for AttachedImage model '''
+    ''' Simple form for AttachedImage model with ``image`` and ``caption`` fields.'''
     
     class Meta:
         model = AttachedImage

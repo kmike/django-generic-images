@@ -17,17 +17,19 @@ from generic_utils.models import GenericModelBase
 
 class BaseImageModel(models.Model):
     ''' Simple abstract Model class with image field.
+    
+        .. attribute:: image
+        
+            ``models.ImageField``
     '''
     
     def get_upload_path(self, filename):
-        ''' Override this to customize upload path
-        '''
+        ''' Override this to customize upload path '''
         raise NotImplementedError
 
     def _upload_path_wrapper(self, filename):
         return self.get_upload_path(filename)
 
-    #: image
     image = models.ImageField(_('Image'), upload_to=_upload_path_wrapper)
     
     class Meta:
@@ -67,16 +69,34 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
     '''
         Abstract Image model that can be attached to any other Django model using 
         generic relations.
-    '''    
+        
+        .. attribute:: is_main
+        
+            BooleanField. Whether the image is the main image for object. 
+            This field is set to False automatically for all images attached to 
+            same object if image with is_main=True is saved to ensure that there 
+            is only 1 main image for object.
+            
+        .. attribute:: order
+        
+            IntegerField to support ordered image sets. 
+            On creation it is set to max(id)+1.
+            
+    '''
+    
     
     user = models.ForeignKey(User, blank=True, null=True, verbose_name=_('User'))
+    'A ForeignKey to associated user, for example user who uploaded image. Can be empty.'
     
     caption = models.TextField(_('Caption'), null=True, blank=True)
+    'TextField caption for image'
+    
     is_main = models.BooleanField(_('Main image'), default=False)
     
     order = models.IntegerField(_('Order'), default=0)
 
-    objects = AttachedImageManager()          
+    objects = AttachedImageManager()   
+    'Default manager of :class:`~generic_images.managers.AttachedImageManager` type.'
     
     def next(self):
         ''' Returns next image for same content_object and None if image is the last. '''
@@ -101,7 +121,8 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
     def get_file_name(self, filename):        
         ''' Returns file name (without path and extenstion) 
             for uploaded image. Default is 'max(pk)+1'. 
-            Override this in subclass if you want different file names.
+            Override this in subclass if you want different file names (ex: 
+            random string).
         '''        
 #        alphabet = "1234567890abcdefghijklmnopqrstuvwxyz"        
 #        return ''.join([random.choice(alphabet) for i in xrange(16)]) # 1e25 variants
@@ -110,9 +131,10 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
         
     def get_upload_path(self, filename):
         ''' Override this in proxy subclass to customize upload path.
-            Default upload path is ``/media/images/<user.id>/<filename>.<ext>``
-            or ``/media/images/common/<filename>.<ext>`` if user is not set.
-            filename is returned by get_file_name method.
+            Default upload path is :file:`/media/images/<user.id>/<filename>.<ext>`
+            or :file:`/media/images/common/<filename>.<ext>` if user is not set.
+            
+            filename is returned by :meth:`~generic_images.models.AbstractAttachedImage.get_file_name` method.
             By default it is probable id of new image (it is
             predicted as it is unknown at this stage).
         '''        
@@ -158,7 +180,8 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
 class AttachedImage(AbstractAttachedImage):
     '''
         Image model that can be attached to any other Django model using 
-        generic relations.
+        generic relations. It is simply non-abstract subclass of 
+        :class:`~generic_images.models.AbstractAttachedImage`
     '''    
     class Meta:
         ordering = ['-order']

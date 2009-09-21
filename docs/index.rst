@@ -58,18 +58,41 @@ to any django model using generic relations.
 Models
 ------
 
-.. automodule:: generic_images.models
-	:exclude-members: Meta, save, delete
-	:show-inheritance:
-	:members:
-	:undoc-members:
+.. autoclass:: generic_images.models.AttachedImage
 
+.. autoclass:: generic_images.models.AbstractAttachedImage
+    :show-inheritance:
+    :members:
+
+.. autoclass:: generic_images.models.BaseImageModel
+    :members:
+
+
+.. autoclass:: generic_images.models.ReplaceOldImageModel
+    :show-inheritance:
+    :members:
+
+Managers
+--------
+
+.. automodule:: generic_images.managers
+    
+.. autoclass:: generic_images.managers.AttachedImageManager
+    :show-inheritance:    
+    :exclude-members: get_for_model
+    :members:
+
+.. autoclass:: generic_images.managers.ImagesAndUserManager
+    :members:
 
 Forms
 -----
 
 .. automodule:: generic_images.forms
-	:members:
+
+.. autoclass:: generic_images.forms.AttachedImageForm()
+    :show-inheritance:    
+
 	
 Fields for denormalisation
 --------------------------
@@ -88,11 +111,21 @@ Context processors
 Generic Utils
 =============	
 
+
 Pluggable app utils
 -------------------	
 .. automodule:: generic_utils.app_utils
 	:members:
 	:undoc-members:
+
+
+Models
+------
+
+.. autoclass:: generic_utils.models.GenericModelBase
+    :members:
+    
+.. autoclass:: generic_utils.models.TrueGenericModelBase
 
 	
 Generic relation helpers

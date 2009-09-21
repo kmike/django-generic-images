@@ -8,12 +8,14 @@ class PluggableSite(object):
     ''' Base class for reusable apps. 
         The approach is similar to django AdminSite.
         For usage case please check photo_albums app.
-'''
+   '''        
+
     def __init__(self, instance_name, queryset, app_name,
                  object_regex = r'\d+', lookup_field = 'pk',
                  extra_context=None, template_object_name = 'object',
                  has_edit_permission = lambda request, obj: True,
                  context_processors=None):
+        
         self.object_regex = object_regex
         self.lookup_field = lookup_field
         self.instance_name = instance_name
@@ -78,17 +80,18 @@ class PluggableSite(object):
                     
     def make_regex(self, url):  
         ''' 
-            Make regex string for PluggableSite urlpatterns: prepend url
+            Make regex string for ``PluggableSite`` urlpatterns: prepend url
             with parent object's url and app name.
+            
             See also: http://code.djangoproject.com/ticket/11559.
         '''      
         return r"^(?P<object_id>%s)/%s%s$" % (self.object_regex, self.app_name, url)
     
     
     def patterns(self):
-        ''' This method should return url patterns 
-            (like urlpatterns variable in urls.py).
-            It is helpful to construct regex with make_regex method.
+        ''' This method should return url patterns (like urlpatterns variable in 
+            :file:`urls.py`). It is helpful to construct regex with
+            :meth:`~generic_utils.app_utils.PluggableSite.make_regex` method.
             Example::
             
                 return patterns('photo_albums.views',                                
@@ -107,7 +110,7 @@ class PluggableSite(object):
     @property
     def urls(self):
         '''  
-            Use it in urls.py.
+            Use it in :file:`urls.py`.
             Example::
             
                 urlpatterns += patterns('', url(r'^my_site/', include(my_pluggable_site.urls)),)

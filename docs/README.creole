@@ -1,3 +1,5 @@
+This file is probably outdated. Please use sphinx docs instead.
+
 = Overview =
 
 django-generic-images is a generic images pluggable django app.
