@@ -121,8 +121,8 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
     def get_file_name(self, filename):        
         ''' Returns file name (without path and extenstion) 
             for uploaded image. Default is 'max(pk)+1'. 
-            Override this in subclass if you want different file names (ex: 
-            random string).
+            Override this in subclass or assign another functions per-instance 
+            if you want different file names (ex: random string).
         '''        
 #        alphabet = "1234567890abcdefghijklmnopqrstuvwxyz"        
 #        return ''.join([random.choice(alphabet) for i in xrange(16)]) # 1e25 variants
@@ -144,19 +144,27 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
         return os.path.join('media', 'images', user_folder, self.get_file_name(filename) + ext)    
     
     
-    def save(self, *args, **kwargs):        
+    def save(self, *args, **kwargs):
+        send_signal = getattr(self, 'send_signal', True)
         if self.is_main:
             related_images = self.__class__.objects.filter(content_type=self.content_type, 
                                                           object_id=self.object_id)
             related_images.update(is_main=False)
-        if not self.pk:
-            self.order = self._get_next_pk()
-        super(AbstractAttachedImage, self).save(*args, **kwargs)         
-        image_saved.send(sender = self.content_type.model_class(), instance = self)
+            
+        if not self.pk: # object is created
+            if not self.order: # order is not set
+                self.order = self._get_next_pk() # let it be max(pk)+1
+                
+        super(AbstractAttachedImage, self).save(*args, **kwargs)
+        
+        if send_signal: 
+            image_saved.send(sender = self.content_type.model_class(), instance = self)
         
         
     def delete(self, *args, **kwargs):
-        image_deleted.send(sender = self.content_type.model_class(), instance = self)
+        send_signal = getattr(self, 'send_signal', True)        
+        if send_signal:
+            image_deleted.send(sender = self.content_type.model_class(), instance = self)
         super(AbstractAttachedImage, self).delete(*args, **kwargs)            
         
         

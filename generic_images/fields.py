@@ -14,6 +14,29 @@ from composition.base import CompositionField
 from generic_images.models import AttachedImage
 from generic_images.signals import image_saved, image_deleted
 
+
+def force_recalculate(obj):
+    ''' Recalculate all ImageCountField and UserImageCountField fields
+        in object ``obj``. 
+        
+        This should be used if auto-updating of these fields was disabled for
+        some reason.
+        
+        To disable auto-update when saving AttachedImage instance 
+        (for example when you need to save a lot of images and want to 
+        recalculate denormalised values only after all images are saved) use 
+        this pattern::
+        
+            image = AttachedImage(...)
+            image.send_signal = False
+            image.save()
+
+    '''        
+    class Stub(object):
+        content_object = obj    
+    img = Stub()
+    image_saved.send(sender = obj.__class__, instance = img)
+    
         
 class ImageCountField(CompositionField):
     ''' Field with model's attached images count.
@@ -46,7 +69,7 @@ class ImageCountField(CompositionField):
                 'do': lambda model, image, signal: AttachedImage.objects.get_for_model(model).count(),
                 'field_holder_getter': lambda image: image.content_object
             }
-        )        
+        )
 
 
 class UserImageCountField(CompositionField):
