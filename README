@@ -1,3 +1,5 @@
+This file is probably outdated. Please use sphinx docs instead.
+
 = Overview =
 
 django-generic-images is a generic images pluggable django app.
@@ -7,14 +9,18 @@ that can be attached to any other Django model using generic relations.
 
 Requirements: django 1.1 (or trunk).
 
-django-composition (fine application for writing denormalised fields 
-by Alex Koshelev) is required if you want to use ImageCountField or 
+django-composition is required if you want to use ImageCountField or 
 UserImageCountField.
 
 
 = Installation =
 
+$ pip install django-generic-images
+
+or
+
 $ easy_install django-generic-images
+
 or
 
 $ hg clone http://bitbucket.org/kmike/django-generic-images/ 
@@ -26,6 +32,7 @@ $ manage.py syncdb
 
 For django-composition installation follow instructions at 
 http://bitbucket.org/daevaorn/django-composition/src/
+
 
 = Provided models =
 

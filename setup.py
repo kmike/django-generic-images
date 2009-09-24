@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
       name='django-generic-images',
-      version='0.29',
+      version='0.30',
       author='Mikhail Korobov',
       author_email='kmike84@gmail.com',
       url='http://bitbucket.org/kmike/django-generic-images/',      
@@ -15,16 +15,14 @@ setup(
       package_data={'generic_images': ['locale/en/LC_MESSAGES/*','locale/ru/LC_MESSAGES/*']},      
       
       requires = ['django (>=1.1)'],
-      
-      classifiers=(
+            
+      classifiers=[
           'Development Status :: 3 - Alpha',
-          'Environment :: Plugins',
+          'Environment :: Web Environment'
           'Framework :: Django',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: BSD License',
-          'Natural Language :: English',
-          'Natural Language :: Russian',
           'Programming Language :: Python',
           'Topic :: Software Development :: Libraries :: Python Modules'
-        ),
+      ],
 )

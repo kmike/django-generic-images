@@ -1,6 +1,6 @@
 # Sphinx inventory version 1
 # Project: django-generic-images
-# Version: 0.29
+# Version: 0.30
 generic_images.fields mod index.html
 generic_images.forms mod index.html
 generic_utils.test_helpers mod index.html
@@ -19,7 +19,7 @@ generic_images.models.BaseImageModel.get_upload_path method index.html
 generic_images.models.AbstractAttachedImage class index.html
 generic_utils.test_helpers.ViewTest.check_url method index.html
 generic_utils.models.GenericModelBase.injector attribute index.html
-generic_utils.test_helpers.ViewTest.setUp method index.html
+generic_images.fields.force_recalculate function index.html
 generic_images.models.AttachedImage class index.html
 generic_utils.app_utils.PluggableSite.check_permissions method index.html
 generic_images.models.AbstractAttachedImage.get_file_name method index.html
@@ -41,6 +41,7 @@ generic_utils.app_utils.PluggableSite.patterns method index.html
 generic_utils.models.GenericModelBase class index.html
 generic_utils.app_utils.PluggableSite.get_object method index.html
 generic_utils.app_utils.PluggableSite.get_object_and_context method index.html
+generic_utils.test_helpers.ViewTest.setUp method index.html
 generic_utils.app_utils.PluggableSite class index.html
 generic_utils.managers.GenericModelManager.for_model method index.html
 generic_utils.models.GenericModelBase.content_object attribute index.html

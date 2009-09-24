@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>django-generic-images’s documentation &mdash; django-generic-images v0.29 documentation</title>
+    <title>django-generic-images’s documentation &mdash; django-generic-images v0.30 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.29',
+        VERSION:     '0.30',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -19,7 +19,7 @@
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="django-generic-images v0.29 documentation" href="" /> 
+    <link rel="top" title="django-generic-images v0.30 documentation" href="" /> 
   </head>
   <body>
     <div class="related">
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              accesskey="M">modules</a> |</li>
-        <li><a href="">django-generic-images v0.29 documentation</a> &raquo;</li> 
+        <li><a href="">django-generic-images v0.30 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -111,8 +111,8 @@ On creation it is set to max(id)+1.</dd></dl>
 <tt class="descname">get_file_name</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.get_file_name" title="Permalink to this definition">¶</a></dt>
 <dd>Returns file name (without path and extenstion) 
 for uploaded image. Default is &#8216;max(pk)+1&#8217;. 
-Override this in subclass if you want different file names (ex: 
-random string).</dd></dl>
+Override this in subclass or assign another functions per-instance 
+if you want different file names (ex: random string).</dd></dl>
 
 <dl class="method">
 <dt id="generic_images.models.AbstractAttachedImage.get_upload_path">
@@ -273,6 +273,24 @@ constructor. As with <a title="generic_images.fields.ImageCountField" class="ref
 underlying field.</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="generic_images.fields.force_recalculate">
+<tt class="descclassname">generic_images.fields.</tt><tt class="descname">force_recalculate</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#generic_images.fields.force_recalculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recalculate all ImageCountField and UserImageCountField fields
+in object <tt class="docutils literal"><span class="pre">obj</span></tt>.</p>
+<p>This should be used if auto-updating of these fields was disabled for
+some reason.</p>
+<p>To disable auto-update when saving AttachedImage instance 
+(for example when you need to save a lot of images and want to 
+recalculate denormalised values only after all images are saved) use 
+this pattern:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">image</span> <span class="o">=</span> <span class="n">AttachedImage</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">image</span><span class="o">.</span><span class="n">send_signal</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 <div class="section" id="module-generic_images.context_processors">
 <h4>Context processors<a class="headerlink" href="#module-generic_images.context_processors" title="Permalink to this headline">¶</a></h4>
@@ -291,7 +309,7 @@ Useful for managing possible sorl.thumbnails thumbnail&#8217;s sizes</dd></dl>
 <dl class="class">
 <dt id="generic_utils.app_utils.PluggableSite">
 <em class="property">
-class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>queryset</em>, <em>app_name</em>, <em>object_regex='\d+'</em>, <em>lookup_field='pk'</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c30b70&gt;</em>, <em>context_processors=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
+class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>queryset</em>, <em>app_name</em>, <em>object_regex='\d+'</em>, <em>lookup_field='pk'</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c27930&gt;</em>, <em>context_processors=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for reusable apps. 
 The approach is similar to django AdminSite.
 For usage case please check photo_albums app.</p>
@@ -461,7 +479,7 @@ be attached via generic relationship. It can be considered as an addition to
 GFKmanager and GFKQuerySet from djangosnippets for different use cases.</p>
 <dl class="method">
 <dt id="generic_utils.managers.GenericInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a0fa70&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a177b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances) </dt>
 <dd>will be attached to elements of this iterable.</dd>
@@ -610,7 +628,7 @@ class </em><tt class="descclassname">generic_utils.test_helpers.</tt><tt class="
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              >modules</a> |</li>
-        <li><a href="">django-generic-images v0.29 documentation</a> &raquo;</li> 
+        <li><a href="">django-generic-images v0.30 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
