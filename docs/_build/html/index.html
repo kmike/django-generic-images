@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>django-generic-images’s documentation &mdash; django-generic-images v0.30 documentation</title>
+    <title>django-generic-images’s documentation &mdash; django-generic-images v0.31 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.30',
+        VERSION:     '0.31',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -19,7 +19,7 @@
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="django-generic-images v0.30 documentation" href="" /> 
+    <link rel="top" title="django-generic-images v0.31 documentation" href="" /> 
   </head>
   <body>
     <div class="related">
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              accesskey="M">modules</a> |</li>
-        <li><a href="">django-generic-images v0.30 documentation</a> &raquo;</li> 
+        <li><a href="">django-generic-images v0.31 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -309,7 +309,7 @@ Useful for managing possible sorl.thumbnails thumbnail&#8217;s sizes</dd></dl>
 <dl class="class">
 <dt id="generic_utils.app_utils.PluggableSite">
 <em class="property">
-class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>queryset</em>, <em>app_name</em>, <em>object_regex='\d+'</em>, <em>lookup_field='pk'</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c27930&gt;</em>, <em>context_processors=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
+class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>queryset</em>, <em>app_name</em>, <em>object_regex='\d+'</em>, <em>lookup_field='pk'</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c1fab0&gt;</em>, <em>context_processors=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for reusable apps. 
 The approach is similar to django AdminSite.
 For usage case please check photo_albums app.</p>
@@ -444,10 +444,10 @@ with TextField object_id instead of PositiveIntegerField.</dd></dl>
 <dl class="class">
 <dt id="generic_utils.managers.GenericInjector">
 <em class="property">
-class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="descname">GenericInjector</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Manager for selecting all generic-related objects in one (two) SQL queries.</dt>
-<dd><p class="first">Selection is performed for a list of objects. Resulting data is aviable as attribute 
+class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="descname">GenericInjector</tt><big>(</big><em>fk_field='object_id'</em>, <em>ct_field='content_type'</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector" title="Permalink to this definition">¶</a></dt>
+<dd><p>RelatedInjector but for GenericForeignKey&#8217;s. 
+Manager for selecting all generic-related objects in one (two) SQL queries.
+Selection is performed for a list of objects. Resulting data is aviable as attribute 
 of original model. Only one instance per object can be selected. Example usage: 
 select (and make acessible as user.avatar) all avatars for a list of user when 
 avatars are AttachedImage&#8217;s attached to User model with is_main=True attributes.</p>
@@ -463,7 +463,7 @@ avatars are AttachedImage&#8217;s attached to User model with is_main=True attri
 <span class="c"># users[i].avatar is None</span>
 </pre></div>
 </div>
-<dl class="last docutils">
+<dl class="docutils">
 <dt>For this example 2 or 3 sql queries will be executed:</dt>
 <dd><ol class="first last arabic simple">
 <li>one query for selecting 10 users,</li>
@@ -472,21 +472,19 @@ avatars are AttachedImage&#8217;s attached to User model with is_main=True attri
 </ol>
 </dd>
 </dl>
-</dd>
-</dl>
 <p>One can reuse GenericInjector manager for other models that are supposed to 
 be attached via generic relationship. It can be considered as an addition to 
 GFKmanager and GFKQuerySet from djangosnippets for different use cases.</p>
 <dl class="method">
 <dt id="generic_utils.managers.GenericInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a177b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a178f0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances) </dt>
 <dd>will be attached to elements of this iterable.</dd>
 </dl>
 <p><tt class="docutils literal"><span class="pre">field_name</span></tt> is the attached object attribute name</p>
 <dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">get_injector_object</span></tt> is a callable that takes object in <cite>objects</cite> iterable.</dt>
+<dt><tt class="docutils literal"><span class="pre">get_inject_object</span></tt> is a callable that takes object in <cite>objects</cite> iterable.</dt>
 <dd>Image will be available as an attribute of the result of 
 <cite>get_injector_object(object)</cite>. Images attached to <cite>get_injector_object(object)</cite>
 will be selected.</dd>
@@ -512,6 +510,60 @@ class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="desc
 <dt id="generic_utils.managers.GenericModelManager.for_model">
 <tt class="descname">for_model</tt><big>(</big><em>model</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericModelManager.for_model" title="Permalink to this definition">¶</a></dt>
 <dd>Returns all objects that are attached to given model</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="generic_utils.managers.RelatedInjector">
+<em class="property">
+class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="descname">RelatedInjector</tt><big>(</big><em>fk_field='object_id'</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manager that can emulate <tt class="docutils literal"><span class="pre">select_related</span></tt> fetching 
+reverse relations using 1 additional SQL query.</p>
+<dl class="method">
+<dt id="generic_utils.managers.RelatedInjector.inject_to">
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a17830&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Related objects </dt>
+<dd>will be attached to elements of this iterable.</dd>
+</dl>
+<p><tt class="docutils literal"><span class="pre">field_name</span></tt> is the attached object attribute name</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">get_injector_object</span></tt> is a callable that takes object in <cite>objects</cite> </dt>
+<dd>iterable. Related objects will be available as an attribute of the 
+result of <tt class="docutils literal"><span class="pre">get_inject_object(obj)</span></tt>. It is assumed that <tt class="docutils literal"><span class="pre">fk_field</span></tt> 
+points to  <tt class="docutils literal"><span class="pre">get_inject_object(obj)</span></tt>.</dd>
+</dl>
+<p>All other kwargs will be passed as arguments to queryset filter function.</p>
+<p>For example, we need to prefetch user profiles when we display a list of 
+comments:</p>
+<div class="highlight-python"><pre># models.py
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    info = models.CharField(max_length=100)
+    objects = models.Manager()
+    injector = RelatedInjector(fk_field='user')
+    
+# views.py            
+def show_comments(request, obj_id):
+    ...
+    comments = list(Comment.objects.for_model(obj).select_related('user'))                                                
+    UserProfile.injector.inject_to(comments, '_profile_cache', 
+                                   lambda comment: comment.user)
+    
+    return direct_to_template('comment_list.html', {'comments': comments})
+ 
+# in comment_list.html             
+{% for comment in comments %}
+    &lt;h3&gt;{{ comment.user }}&lt;/h3&gt;
+    &lt;h4&gt;{{ comment.user.get_profile.info }}&lt;/h4&gt;
+    {{ comment.comment|linebreaks }}
+{% endfor %}</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">comment.user</span></tt> attribute will be selected using <tt class="docutils literal"><span class="pre">select_related</span></tt> and
+<tt class="docutils literal"><span class="pre">comment.user._profile_cache</span></tt> (exposed by get_profile method) will be
+selected by our injector. So there will be only 2 SQL queries for 
+selecting all comments with users and user profiles.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -628,7 +680,7 @@ class </em><tt class="descclassname">generic_utils.test_helpers.</tt><tt class="
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              >modules</a> |</li>
-        <li><a href="">django-generic-images v0.30 documentation</a> &raquo;</li> 
+        <li><a href="">django-generic-images v0.31 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
