@@ -1,5 +1,7 @@
 This file is probably outdated. Please use sphinx docs instead.
 
+http://django-generic-images.googlecode.com/hg/docs/_build/html/index.html
+
 = Overview =
 
 django-generic-images is a generic images pluggable django app.
