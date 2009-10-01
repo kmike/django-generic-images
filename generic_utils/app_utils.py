@@ -1,30 +1,105 @@
 #coding: utf-8
 from django.conf.urls.defaults import *
 from django.http import Http404
-from django.core.urlresolvers import reverse            
-        
+from django.core.urlresolvers import reverse
+from django.template import RequestContext
+from django.db import models 
+from django.db.models.query import QuerySet
 
+def get_site_decorator(site_param='site', obj_param='obj', context_param='context'):
+    def site_method(**extra_params):
+        def decorator(fn):
+            def wrapper(request, **kwargs):
+                try:
+                    site = kwargs.pop(site_param)
+                except KeyError:
+                    raise ValueError("'%s' parameter must be passed to "
+                                     "decorated view (%s)" % (site_param, fn))
+                          
+                # Pop parameters to be passed to actual view function.                 
+                params={} 
+                for key in extra_params:
+                    value = kwargs.pop(key, extra_params[key])
+                    params.update({key:value})
+                    
+                # Now there are only site.object_getter lookup parameters in 
+                # kwargs. Get the object and compute common request context.
+                try:
+                    obj = site.object_getter(**kwargs)
+                except models.ObjectDoesNotExist:
+                    raise Http404("Base object does not exist.")
+                
+                context = site.get_common_context(obj)
+                context_instance = RequestContext(request, context, 
+                                       processors=site.context_processors)
+                
+                # pass site name, the object and common request to decorated view
+                params.update({
+                                site_param:site, 
+                                obj_param: obj,
+                                context_param: context_instance
+                             })
+                
+                # TODO: write correct decorator that keeps docstrings, etc.
+                return fn(request, **params)  
+            return wrapper
+        return decorator
+    return site_method
+
+
+def simple_getter(queryset, object_regex=None, lookup_field=None):
+    
+    object_regex = object_regex or r'\d+'
+    lookup_field = lookup_field or 'pk'
+    
+    if isinstance(queryset, models.Model):
+        qs = queryset._default_manager.all()
+    elif isinstance(queryset, QuerySet) or isinstance(queryset, models.Manager):
+        qs = queryset
+        
+    def object_getter(object_id):
+        return qs.get(**{lookup_field: object_id}) 
+    object_getter.regex = "(?P<object_id>%s)" % object_regex
+    
+    return object_getter
+        
+        
 class PluggableSite(object):
     ''' Base class for reusable apps. 
         The approach is similar to django AdminSite.
         For usage case please check photo_albums app.
    '''        
 
-    def __init__(self, instance_name, queryset, app_name,
-                 object_regex = r'\d+', lookup_field = 'pk',
-                 extra_context=None, template_object_name = 'object',
+    def __init__(self, 
+                 instance_name, 
+                 app_name,
+                 queryset = None,
+                 object_regex = None,
+                 lookup_field = None,
+                 extra_context=None, 
+                 template_object_name = 'object',
                  has_edit_permission = lambda request, obj: True,
-                 context_processors=None):
-        
-        self.object_regex = object_regex
-        self.lookup_field = lookup_field
+                 context_processors = None, 
+                 object_getter = None):
+                        
         self.instance_name = instance_name
-        self.queryset = queryset
         self.extra_context = extra_context or {}
         self.app_name = app_name
         self.has_edit_permission = has_edit_permission
         self.template_object_name = template_object_name
         self.context_processors = context_processors
+
+        if object_regex or lookup_field or (queryset is not None):
+            if object_getter is not None:
+                raise ValueError('It is ambiguos what lookup method should be '
+                                'used: old (queryset+object_regex+lookup_field)'
+                                ' or new (object_getter).')
+            self.object_getter = simple_getter(queryset, object_regex, lookup_field)
+        elif object_getter is not None:
+            self.object_getter = object_getter
+        else:
+            raise ValueError('Please provide object_getter or queryset.')
+                
         
     def reverse(self, url, args=None, kwargs=None):
         ''' Reverse an url taking self.app_name in account '''
@@ -37,46 +112,14 @@ class PluggableSite(object):
     def check_permissions(self, request, object):
         if not self.has_edit_permission(request, object):
             raise Http404('Not allowed')
-        
-        
-    def get_object(self, *args, **kwargs):
-        '''
-        If one positioned argument is given it is used as
-        a value for lookup with key=self.lookup_field ('pk'
-        by default). If keyword arguments are given they are
-        passed as queryset's get lookup parameters.
-        '''
-        if args and not kwargs:
-            kwargs = {self.lookup_field: args[0]} 
-            args = []           
-        return self.queryset.get(*args, **kwargs)
-        
-        
-    def get_object_or_404(self, *args, **kwargs):
-        '''
-        If one positioned argument is given it is used as
-        a value for lookup with key=self.lookup_field ('pk'
-        by default). If keyword arguments are given they are
-        passed as queryset's get lookup parameters. If no object
-        is found Http404 exception is raised. 
-        '''
-        try:
-            return self.get_object(*args, **kwargs)                
-        except self.queryset.model.DoesNotExist:
-            raise Http404('No %s matches the given query.' % self.queryset.model._meta.object_name)
     
 
-    def get_common_context(self, object):
-        context = {self.template_object_name: object, 'current_app': self.app_name}
+    def get_common_context(self, obj):
+        context = {self.template_object_name: obj, 'current_app': self.app_name}
         if (self.extra_context):
             context.update(self.extra_context)
         return context
-    
-    
-    def get_object_and_context(self, *args, **kwargs):
-        obj = self.get_object_or_404(*args, **kwargs)
-        return obj, self.get_common_context(obj)
-    
+        
                     
     def make_regex(self, url):  
         ''' 
@@ -84,8 +127,8 @@ class PluggableSite(object):
             with parent object's url and app name.
             
             See also: http://code.djangoproject.com/ticket/11559.
-        '''      
-        return r"^(?P<object_id>%s)/%s%s$" % (self.object_regex, self.app_name, url)
+        '''          
+        return r"^%s/%s%s$" % (self.object_getter.regex, self.app_name, url)
     
     
     def patterns(self):
