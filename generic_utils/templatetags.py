@@ -15,9 +15,9 @@ def validate_params(bits, arguments_count, keyword_positions):
     '''    
     
     if len(bits) != arguments_count+1:
-        raise InvalidTagParamsError("'%s' tag takes %d arguments" % (bits[0], arguments_count,))
+        raise InvalidParamsError("'%s' tag takes %d arguments" % (bits[0], arguments_count,))
     
     for pos in keyword_positions:
         value = keyword_positions[pos]
         if bits[pos] != value:
-            raise InvalidTagParamsError("argument #%d to '%s' tag must be '%s'" % (pos, bits[0], value))
+            raise InvalidParamsError("argument #%d to '%s' tag must be '%s'" % (pos, bits[0], value))
