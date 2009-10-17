@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 
 def get_site_decorator(site_param='site', obj_param='obj', context_param='context'):
+    ''' Returns decorator useful for PluggableSite views. '''
     def site_method(**extra_params):
         def decorator(fn):
             def wrapper(request, **kwargs):
@@ -16,7 +17,7 @@ def get_site_decorator(site_param='site', obj_param='obj', context_param='contex
                     raise ValueError("'%s' parameter must be passed to "
                                      "decorated view (%s)" % (site_param, fn))
                           
-                # Pop parameters to be passed to actual view function.                 
+                # Pop parameters to be passed to actual view function.
                 params={} 
                 for key in extra_params:
                     value = kwargs.pop(key, extra_params[key])
@@ -48,7 +49,10 @@ def get_site_decorator(site_param='site', obj_param='obj', context_param='contex
 
 
 def simple_getter(queryset, object_regex=None, lookup_field=None):
+    ''' Returns simple object_getter function for use with PluggableSite. 
+    It takes 'queryset' with QuerySet or Model instance, 'object_regex' with
     
+    '''
     object_regex = object_regex or r'\d+'
     lookup_field = lookup_field or 'pk'
     
