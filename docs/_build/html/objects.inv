@@ -1,6 +1,6 @@
 # Sphinx inventory version 1
 # Project: django-generic-images
-# Version: 0.31
+# Version: 0.35
 generic_images.fields mod index.html
 generic_images.forms mod index.html
 generic_utils.test_helpers mod index.html
@@ -15,6 +15,7 @@ generic_utils.app_utils.GenericModelBase.content_type attribute index.html
 generic_images.models.AbstractAttachedImage.objects attribute index.html
 generic_utils.app_utils.PluggableSite.make_regex method index.html
 generic_images.models.AbstractAttachedImage.next method index.html
+generic_utils.managers.RelatedInjector.inject_to method index.html
 generic_utils.managers.RelatedInjector class index.html
 generic_images.models.BaseImageModel.get_upload_path method index.html
 generic_images.models.AbstractAttachedImage class index.html
@@ -29,9 +30,9 @@ generic_utils.app_utils.PluggableSite.urls attribute index.html
 generic_utils.templatetags.InvalidParamsError exception index.html
 generic_utils.app_utils.PluggableSite.reverse method index.html
 generic_images.managers.AttachedImageManager.get_main_for method index.html
+generic_utils.app_utils.get_site_decorator function index.html
 generic_images.models.AbstractAttachedImage.content_object attribute index.html
 generic_utils.test_helpers.ViewTest class index.html
-generic_utils.app_utils.PluggableSite.get_object_or_404 method index.html
 generic_images.forms.AttachedImageForm class index.html
 generic_utils.templatetags.validate_params function index.html
 generic_images.fields.UserImageCountField class index.html
@@ -40,9 +41,7 @@ generic_utils.models.GenericModelBase.objects attribute index.html
 generic_utils.app_utils.PluggableSite.get_common_context method index.html
 generic_utils.app_utils.PluggableSite.patterns method index.html
 generic_utils.models.GenericModelBase class index.html
-generic_utils.app_utils.PluggableSite.get_object method index.html
-generic_utils.app_utils.PluggableSite.get_object_and_context method index.html
-generic_utils.test_helpers.ViewTest.setUp method index.html
+generic_images.admin.AttachedImageAdminForm class index.html
 generic_utils.app_utils.PluggableSite class index.html
 generic_utils.managers.GenericModelManager.for_model method index.html
 generic_utils.models.GenericModelBase.content_object attribute index.html
@@ -52,8 +51,9 @@ AbstractAttachedImage.order attribute index.html
 generic_images.models.AbstractAttachedImage.previous method index.html
 generic_images.managers.ImagesAndUserManager.select_with_main_images method index.html
 generic_images.models.AbstractAttachedImage.user attribute index.html
+generic_utils.app_utils.simple_getter function index.html
 generic_images.models.AbstractAttachedImage.get_upload_path method index.html
-generic_utils.managers.RelatedInjector.inject_to method index.html
+generic_images.admin.AttachedImagesInline class index.html
 generic_images.context_processors.thumbnail_types function index.html
 generic_utils.models.TrueGenericModelBase class index.html
 generic_images.managers.AttachedImageManager class index.html

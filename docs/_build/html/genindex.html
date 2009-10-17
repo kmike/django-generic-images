@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; django-generic-images v0.31 documentation</title>
+    <title>Index &mdash; django-generic-images v0.35 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.31',
+        VERSION:     '0.35',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -19,7 +19,7 @@
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="django-generic-images v0.31 documentation" href="index.html" /> 
+    <link rel="top" title="django-generic-images v0.35 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              accesskey="M">modules</a> |</li>
-        <li><a href="index.html">django-generic-images v0.31 documentation</a> &raquo;</li> 
+        <li><a href="index.html">django-generic-images v0.35 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -54,8 +54,10 @@
 
 <dt><a href="index.html#generic_images.models.AbstractAttachedImage">AbstractAttachedImage (class in generic_images.models)</a></dt>
 <dt><a href="index.html#generic_images.models.AttachedImage">AttachedImage (class in generic_images.models)</a></dt>
+<dt><a href="index.html#generic_images.admin.AttachedImageAdminForm">AttachedImageAdminForm (class in generic_images.admin)</a></dt>
 <dt><a href="index.html#generic_images.forms.AttachedImageForm">AttachedImageForm (class in generic_images.forms)</a></dt></dl></td><td width="33%" valign="top"><dl>
 <dt><a href="index.html#generic_images.managers.AttachedImageManager">AttachedImageManager (class in generic_images.managers)</a></dt>
+<dt><a href="index.html#generic_images.admin.AttachedImagesInline">AttachedImagesInline (class in generic_images.admin)</a></dt>
 </dl></td></tr></table>
 
 <h2 id="B">B</h2>
@@ -99,15 +101,13 @@
 <dt><a href="index.html#module-generic_utils.managers">generic_utils.managers (module)</a></dt>
 <dt><a href="index.html#module-generic_utils.templatetags">generic_utils.templatetags (module)</a></dt>
 <dt><a href="index.html#module-generic_utils.test_helpers">generic_utils.test_helpers (module)</a></dt>
-<dt><a href="index.html#generic_utils.managers.GenericInjector">GenericInjector (class in generic_utils.managers)</a></dt>
-<dt><a href="index.html#generic_utils.models.GenericModelBase">GenericModelBase (class in generic_utils.models)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="index.html#generic_utils.managers.GenericInjector">GenericInjector (class in generic_utils.managers)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="index.html#generic_utils.models.GenericModelBase">GenericModelBase (class in generic_utils.models)</a></dt>
 <dt><a href="index.html#generic_utils.managers.GenericModelManager">GenericModelManager (class in generic_utils.managers)</a></dt>
 <dt><a href="index.html#generic_utils.app_utils.PluggableSite.get_common_context">get_common_context() (generic_utils.app_utils.PluggableSite method)</a></dt>
 <dt><a href="index.html#generic_images.models.AbstractAttachedImage.get_file_name">get_file_name() (generic_images.models.AbstractAttachedImage method)</a></dt>
 <dt><a href="index.html#generic_images.managers.AttachedImageManager.get_main_for">get_main_for() (generic_images.managers.AttachedImageManager method)</a></dt>
-<dt><a href="index.html#generic_utils.app_utils.PluggableSite.get_object">get_object() (generic_utils.app_utils.PluggableSite method)</a></dt>
-<dt><a href="index.html#generic_utils.app_utils.PluggableSite.get_object_and_context">get_object_and_context() (generic_utils.app_utils.PluggableSite method)</a></dt>
-<dt><a href="index.html#generic_utils.app_utils.PluggableSite.get_object_or_404">get_object_or_404() (generic_utils.app_utils.PluggableSite method)</a></dt>
+<dt><a href="index.html#generic_utils.app_utils.get_site_decorator">get_site_decorator() (in module generic_utils.app_utils)</a></dt>
 <dt><a href="index.html#generic_images.models.AbstractAttachedImage.get_upload_path">get_upload_path() (generic_images.models.AbstractAttachedImage method)</a></dt>
   <dd><dl>
     <dt><a href="index.html#generic_images.models.BaseImageModel.get_upload_path">(generic_images.models.BaseImageModel method)</a></dt>
@@ -179,7 +179,7 @@
 <dl>
 
 <dt><a href="index.html#generic_images.managers.ImagesAndUserManager.select_with_main_images">select_with_main_images() (generic_images.managers.ImagesAndUserManager method)</a></dt>
-<dt><a href="index.html#generic_utils.test_helpers.ViewTest.setUp">setUp() (generic_utils.test_helpers.ViewTest method)</a></dt></dl></td><td width="33%" valign="top"><dl>
+<dt><a href="index.html#generic_utils.app_utils.simple_getter">simple_getter() (in module generic_utils.app_utils)</a></dt></dl></td><td width="33%" valign="top"><dl>
 </dl></td></tr></table>
 
 <h2 id="T">T</h2>
@@ -243,7 +243,7 @@
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">django-generic-images v0.31 documentation</a> &raquo;</li> 
+        <li><a href="index.html">django-generic-images v0.35 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
