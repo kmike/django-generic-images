@@ -36,3 +36,4 @@ docs/_build/doctrees/
 build/
 dist/
 .build/
+MANIFEST
