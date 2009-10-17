@@ -1,192 +1,55 @@
-This file is probably outdated. Please use sphinx docs instead.
-
-http://django-generic-images.googlecode.com/hg/docs/_build/html/index.html
-
-= Overview =
-
 django-generic-images is a generic images pluggable django app.
+License: MIT.
+Author: Mikhail Korobov
 
-This app provides image model (with useful managers, methods and fields) 
+This app provides image model (useful managers, methods and fields)
 that can be attached to any other Django model using generic relations.
+It also provides admin multi-image uploader (based on
+GearsUploader, http://bitbucket.org/kmike/gearsuploader/) with client-side
+image resizing, animated progress bar and before-upload image previews.
 
 Requirements: django 1.1 (or trunk).
 
-django-composition is required if you want to use ImageCountField or 
-UserImageCountField.
+django-composition (http://bitbucket.org/daevaorn/django-composition/) is
+required if you want to use ImageCountField or UserImageCountField.
+
+There is an image gallery app
+(django-photo-albums, http://bitbucket.org/kmike/django-photo-albums)
+based on django-generic-images.
+
+************
+Installation
+************
+::
+
+    $ pip install django-generic-images
+
+or::
+
+    $ easy_install django-generic-images
+
+or::
+
+    $ hg clone http://bitbucket.org/kmike/django-generic-images/
+    $ cd django-generic-images
+    $ python setup.py install
+
+Then add 'generic_images' to your ``INSTALLED_APPS`` in settings.py and run ::
+
+    $ manage.py syncdb
+
+If you want ``ImageCountField`` and ``UserImageCountField`` then follow
+installation instructions at  http://bitbucket.org/daevaorn/django-composition/
+to install django-composition.
+
+For admin uploader to work ``generic_images`` folder from
+``generic_images/media/`` should be copied to project's ``MEDIA_ROOT``.
 
 
-= Installation =
+*****
+Usage
+*****
 
-$ pip install django-generic-images
+Please check documentation for usage instructions:
 
-or
-
-$ easy_install django-generic-images
-
-or
-
-$ hg clone http://bitbucket.org/kmike/django-generic-images/ 
-$ cd django-generic-images
-$ python setup.py install
-
-Then add 'generic_images' to your INSTALLED_APPS in settings.py and run 
-$ manage.py syncdb
-
-For django-composition installation follow instructions at 
-http://bitbucket.org/daevaorn/django-composition/src/
-
-
-= Provided models =
-
-== AttachedImage ==
-
-Image model that can be attached to any other Django model using 
-generic relations. Description of it's fields, managers and instance methods 
-is below.
-
-Be aware that AttachedImage is a subclass of abstract ReplaceOldImageModel.
-ReplaceOldImageModel has overrided save method that deletes old file if new 
-file is uploaded. Standard django ImageField behaviour is to keep old files 
-so old files are never deleted. 
-
-    
-===Fields===
-
-* image
-	ImageField 
-
-* user
-	associated user, for example user who uploaded image
-
-* content_type
-* object_id
-* content_object
-	generic relation data
-
-* caption
-	text caption for image
-	
-* is_main
-	whether the image is the main image for object. 
-	This field is set to False automatically for all images attached to 
-	same object if image with is_main=True is saved to ensure that there
-	is only 1 main image for object.
-	
-* order 
-	integer field to support ordered image sets. On instance creation it is 
-	set to max(id)+1.
-
-===Methods===
-
-* get_upload_path(filename)
-	Override this in proxy subclass to customize upload path.
-    Default upload path is "/media/images/<user.id>/<image.id>.<ext>"
-    or "/media/images/common/<image.id>.<ext>" (if user is not set).
-    image.id is predicted as it is unknown at this stage.    
-
-===Managers===
-
-1. objects = AttachedImageManager()
-
-It is default manager with helpful functions for attached images. Methods:
-
-* for_model(model) - Returns all images that are attached to given model            
-* get_main_for(model) - Returns main image for given model
-
-	    	
-2. injector = GenericInjector()
-
-It is helper manager to reduce sql query number while selecting attached images.
-Selection is performed for a list of objects. Resulting data is available as 
-attribute of original model. Only one instance per object can be selected. 
-Example usage: select (and make acessible as user.avatar) all avatars for a 
-list of users when avatars are AttachedImage's (with is_main=True) attached to 
-User model.
-
-Example:
-
-from django.contrib.auth.models import User
-from generic_images.models import AttachedImage
-
-users = User.objects.all()[:10]
-AttachedImage.injector.inject_to(users, 'avatar', is_main=True)	
-
-# i=0..9: users[i].avatar is AttachedImage objects with is_main=True. 
-# If there is no such AttachedImage (user doesn't have an avatar), 
-# users[i].avatar is None
-
-
-For this example 2 or 3 sql queries will be executed:
-1. one query for selecting 10 users,
-2. one query for selecting all avatars (images with is_main=True) for selected users
-3. and maybe one query for selecting content-type for User model
-
-generic_utils.injector.GenericInjector manager has one method:
-
-* inject_to(objects, field_name, get_inject_object = lambda obj: obj, **kwargs)
-
-`objects` is an iterable. Images (or other generic-related model instances) 
-will be attached to elements of this iterable.
-
-`field_name` is the attached object attribute name
-
-`get_injector_object` is a callable that takes object in `objects` iterable.
-Image will be available as an attribute of the result of 
-get_injector_object(object). Images attached to get_injector_object(object) 
-will be selected.
-
-All other kwargs will be passed as arguments to queryset filter function.
-
-Example: you have a list of comments. Each comment has 'user' attribute. 
-You want to fetch 10 comments and their authors with avatars. Avatars should 
-be accessible as `user.avatar`:
-
-comments = Comment.objects.all().select_related('user')[:10]
-AttachedImage.injector.inject_to(comments, 'avatar', lambda obj: obj.user, is_main=True)   
-
-
-One can reuse GenericInjector manager for other models that are supposed to 
-be attached via generic relationship. It can be considered as an addition to 
-GFKmanager and GFKQuerySet from djangosnippets for different use cases.
-
-
-= Provided fields for denormalisation =
-
-django-generic-images provides fields for storing information about 
-attached images count. Value is stored in model that images are 
-attached to. Value is updated automatically when image is saved or deleted.
-Access to this value is much faster than additional "count()" queries.
-
-
-== ImageCountField ==
-
-It is field with model's attached images count.
-Value of this field is updated automatically when 
-image is added or removed.
-
-Syntax samples:
-
-from generic_images.fields import ImageCountField
-
-class MyModel1(models.Model):
-	#... fields definitions
-	image_count = ImageCountField()
-
-
-class MyModel2(models.Model):
-	#... fields definitions
-	image_count = ImageCountField(native=models.IntegerField(u'MyModel2 Images count', default=0))
-
-
-== UserImageCountField ==
-
-This field is useful when you want to use something like ImageCountField
-for User model. It is not possible to add a field to User model without 
-duck punching (monkey patching). UserImageCountField should be 
-put into user's profile (same model as defined in AUTH_PROFILE_MODULE). 
-It will contain number of images that are attached to corresponding User.
-FK attribute to User model is considered `user` by default, but this 
-can be overrided using `user_attr` argument to UserImageCountField 
-constructor. As with ImageCountField, UserImageCountField constructor 
-accepts also `native` argument - an underlying field.
-
+http://django-generic-images.googlecode.com/hg/docs/_build/html/index.html
