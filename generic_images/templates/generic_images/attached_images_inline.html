@@ -35,7 +35,7 @@
    </div>
    <div id='gears-uploader' class='form-row'>
         <input type='checkbox' id='gears-resize-needed' {{ inline_admin_formset.opts.max_width|yesno:"checked," }}>
-        <label for='gears-resize-needed'>{% trans "Resize if width is > " %}</label>
+        <label for='gears-resize-needed'>{% trans "Resize if width is greater than " %}</label>
         <input type='text' id='gears-resize-width' value='{{ inline_admin_formset.opts.max_width }}' size='4'> px
         <br>
         <input type='button' value='{% trans "Select images to upload" %}' id='select-handler'>
