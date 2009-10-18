@@ -2,13 +2,13 @@ README
 AUTHORS
 setup.py
 
-include generic_images/*
+include generic_images/*.py
 include generic_images/locale/en/LC_MESSAGES/*
 include generic_images/locale/ru/LC_MESSAGES/*
 include generic_images/media/generic_images/js/*
 include generic_images/templates/generic_images/*
 
-include generic_utils/*
+include generic_utils/*.py
 
 include docs/conf.py
 include docs/index.rst
