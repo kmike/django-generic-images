@@ -7,6 +7,7 @@ from generic_images.models import AttachedImage
 
 admin.site.register(AttachedImage)
 
+
 class AttachedImageAdminForm(forms.ModelForm):
     ''' Form for AttachedImage model to be used in inline admin '''
 
@@ -18,6 +19,7 @@ class AttachedImageAdminForm(forms.ModelForm):
               'generic_images/js/GearsUploader.en.yui.js',
               'generic_images/js/AttachedImageInline.js',
         ]
+
     class Meta:
         model = AttachedImage
 

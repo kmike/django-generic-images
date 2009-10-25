@@ -80,7 +80,7 @@ window.addEvent('domready', function(){
             maxWidth: getMaxWidth(),
 
             onUploadComplete: function(){
-                window.location.reload();
+                setTimeout(function(){window.location.reload();},0);
             },
             onBeforeProcess: function(){
                 this.options.maxWidth = getMaxWidth();
