@@ -201,10 +201,10 @@ class AbstractAttachedImage(ReplaceOldImageModel, GenericModelBase):
 
     def delete(self, *args, **kwargs):
         send_signal = getattr(self, 'send_signal', True)
+        super(AbstractAttachedImage, self).delete(*args, **kwargs)
         if send_signal:
             image_deleted.send(sender = self.content_type.model_class(),
                                instance = self)
-        super(AbstractAttachedImage, self).delete(*args, **kwargs)
 
 
     def __unicode__(self):
