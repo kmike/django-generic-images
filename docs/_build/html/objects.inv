@@ -33,6 +33,7 @@ generic_images.managers.AttachedImageManager.get_main_for method index.html
 generic_utils.app_utils.get_site_decorator function index.html
 generic_images.models.AbstractAttachedImage.content_object attribute index.html
 generic_utils.test_helpers.ViewTest class index.html
+generic_images.models.AbstractAttachedImage.get_order_in_album method index.html
 generic_images.forms.AttachedImageForm class index.html
 generic_utils.templatetags.validate_params function index.html
 generic_images.fields.UserImageCountField class index.html

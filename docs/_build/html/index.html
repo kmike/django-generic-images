@@ -100,8 +100,8 @@ generic relations. It is simply non-abstract subclass of
 <em class="property">
 class </em><tt class="descclassname">generic_images.models.</tt><tt class="descname">AbstractAttachedImage</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a title="generic_images.models.ReplaceOldImageModel" class="reference" href="#generic_images.models.ReplaceOldImageModel"><tt class="xref docutils literal"><span class="pre">generic_images.models.ReplaceOldImageModel</span></tt></a>, <a title="generic_utils.models.GenericModelBase" class="reference" href="#generic_utils.models.GenericModelBase"><tt class="xref docutils literal"><span class="pre">generic_utils.models.GenericModelBase</span></tt></a></p>
-<p>Abstract Image model that can be attached to any other Django model using
-generic relations.</p>
+<p>Abstract Image model that can be attached to any other Django model
+using generic relations.</p>
 <dl class="attribute">
 <dt id="AbstractAttachedImage.is_main">
 <tt class="descname">is_main</tt><a class="headerlink" href="#AbstractAttachedImage.is_main" title="Permalink to this definition">¶</a></dt>
@@ -125,25 +125,37 @@ Override this in subclass or assign another functions per-instance
 if you want different file names (ex: random string).</dd></dl>
 
 <dl class="method">
+<dt id="generic_images.models.AbstractAttachedImage.get_order_in_album">
+<tt class="descname">get_order_in_album</tt><big>(</big><em>reversed_ordering=True</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.get_order_in_album" title="Permalink to this definition">¶</a></dt>
+<dd>Returns image order number. It is calculated as (number+1) of images
+attached to the same content_object whose order is greater
+(if &#8216;reverse_ordering&#8217; is True) or lesser (if &#8216;reverse_ordering&#8217; is
+False) than image&#8217;s order.</dd></dl>
+
+<dl class="method">
 <dt id="generic_images.models.AbstractAttachedImage.get_upload_path">
 <tt class="descname">get_upload_path</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.get_upload_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Override this in proxy subclass to customize upload path.
-Default upload path is <tt class="docutils literal"><span class="pre">/media/images/&lt;user.id&gt;/&lt;filename&gt;.&lt;ext&gt;</span></tt>
+Default upload path is
+<tt class="docutils literal"><span class="pre">/media/images/&lt;user.id&gt;/&lt;filename&gt;.&lt;ext&gt;</span></tt>
 or <tt class="docutils literal"><span class="pre">/media/images/common/&lt;filename&gt;.&lt;ext&gt;</span></tt> if user is not set.</p>
-<p>filename is returned by <a title="generic_images.models.AbstractAttachedImage.get_file_name" class="reference" href="#generic_images.models.AbstractAttachedImage.get_file_name"><tt class="xref docutils literal"><span class="pre">get_file_name()</span></tt></a> method.
-By default it is probable id of new image (it is
+<p><tt class="docutils literal"><span class="pre">&lt;filename&gt;</span></tt> is returned by
+<a title="generic_images.models.AbstractAttachedImage.get_file_name" class="reference" href="#generic_images.models.AbstractAttachedImage.get_file_name"><tt class="xref docutils literal"><span class="pre">get_file_name()</span></tt></a>
+method. By default it is probable id of new image (it is
 predicted as it is unknown at this stage).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="generic_images.models.AbstractAttachedImage.next">
 <tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.next" title="Permalink to this definition">¶</a></dt>
-<dd>Returns next image for same content_object and None if image is the last.</dd></dl>
+<dd>Returns next image for same content_object and None if image is
+the last.</dd></dl>
 
 <dl class="method">
 <dt id="generic_images.models.AbstractAttachedImage.previous">
 <tt class="descname">previous</tt><big>(</big><big>)</big><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.previous" title="Permalink to this definition">¶</a></dt>
-<dd>Returns previous image for same content_object and None if image is the first.</dd></dl>
+<dd>Returns previous image for same content_object and None if image
+is the first.</dd></dl>
 
 <dl class="attribute">
 <dt id="generic_images.models.AbstractAttachedImage.content_object">
@@ -154,12 +166,14 @@ fields.</dd></dl>
 <dl class="attribute">
 <dt id="generic_images.models.AbstractAttachedImage.objects">
 <tt class="descname">objects</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.objects" title="Permalink to this definition">¶</a></dt>
-<dd>Default manager of <a title="generic_images.managers.AttachedImageManager" class="reference" href="#generic_images.managers.AttachedImageManager"><tt class="xref docutils literal"><span class="pre">AttachedImageManager</span></tt></a> type.</dd></dl>
+<dd>Default manager of <a title="generic_images.managers.AttachedImageManager" class="reference" href="#generic_images.managers.AttachedImageManager"><tt class="xref docutils literal"><span class="pre">AttachedImageManager</span></tt></a>
+type.</dd></dl>
 
 <dl class="attribute">
 <dt id="generic_images.models.AbstractAttachedImage.user">
 <tt class="descname">user</tt><a class="headerlink" href="#generic_images.models.AbstractAttachedImage.user" title="Permalink to this definition">¶</a></dt>
-<dd>A ForeignKey to associated user, for example user who uploaded image. Can be empty.</dd></dl>
+<dd>A ForeignKey to associated user, for example user who uploaded image.
+Can be empty.</dd></dl>
 
 </dd></dl>
 
@@ -381,7 +395,7 @@ Useful for managing possible sorl.thumbnails thumbnail&#8217;s sizes</dd></dl>
 <dl class="class">
 <dt id="generic_utils.app_utils.PluggableSite">
 <em class="property">
-class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>app_name</em>, <em>queryset=None</em>, <em>object_regex=None</em>, <em>lookup_field=None</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c5cef0&gt;</em>, <em>context_processors=None</em>, <em>object_getter=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
+class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>app_name</em>, <em>queryset=None</em>, <em>object_regex=None</em>, <em>lookup_field=None</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c7a030&gt;</em>, <em>context_processors=None</em>, <em>object_getter=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for reusable apps.
 The approach is similar to django AdminSite.
 For usage case please check photo_albums app.</p>
@@ -518,21 +532,21 @@ with TextField object_id instead of PositiveIntegerField.</dd></dl>
 <dt id="generic_utils.managers.GenericInjector">
 <em class="property">
 class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="descname">GenericInjector</tt><big>(</big><em>fk_field='object_id'</em>, <em>ct_field='content_type'</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector" title="Permalink to this definition">¶</a></dt>
-<dd><p>RelatedInjector but for GenericForeignKey&#8217;s. 
+<dd><p>RelatedInjector but for GenericForeignKey&#8217;s.
 Manager for selecting all generic-related objects in one (two) SQL queries.
-Selection is performed for a list of objects. Resulting data is aviable as attribute 
-of original model. Only one instance per object can be selected. Example usage: 
-select (and make acessible as user.avatar) all avatars for a list of user when 
+Selection is performed for a list of objects. Resulting data is aviable as attribute
+of original model. Only one instance per object can be selected. Example usage:
+select (and make acessible as user.avatar) all avatars for a list of user when
 avatars are AttachedImage&#8217;s attached to User model with is_main=True attributes.</p>
 <p>Example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">generic_images.models</span> <span class="kn">import</span> <span class="n">AttachedImage</span>
 
 <span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[:</span><span class="mf">10</span><span class="p">]</span>
-<span class="n">AttachedImage</span><span class="o">.</span><span class="n">injector</span><span class="o">.</span><span class="n">inject_to</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="s">&#39;avatar&#39;</span><span class="p">,</span> <span class="n">is_main</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>    
+<span class="n">AttachedImage</span><span class="o">.</span><span class="n">injector</span><span class="o">.</span><span class="n">inject_to</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="s">&#39;avatar&#39;</span><span class="p">,</span> <span class="n">is_main</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-<span class="c"># i=0..9: users[i].avatar is AttachedImage objects with is_main=True. </span>
-<span class="c"># If there is no such AttachedImage (user doesn&#39;t have an avatar), </span>
+<span class="c"># i=0..9: users[i].avatar is AttachedImage objects with is_main=True.</span>
+<span class="c"># If there is no such AttachedImage (user doesn&#39;t have an avatar),</span>
 <span class="c"># users[i].avatar is None</span>
 </pre></div>
 </div>
@@ -545,29 +559,29 @@ avatars are AttachedImage&#8217;s attached to User model with is_main=True attri
 </ol>
 </dd>
 </dl>
-<p>One can reuse GenericInjector manager for other models that are supposed to 
-be attached via generic relationship. It can be considered as an addition to 
+<p>One can reuse GenericInjector manager for other models that are supposed to
+be attached via generic relationship. It can be considered as an addition to
 GFKmanager and GFKQuerySet from djangosnippets for different use cases.</p>
 <dl class="method">
 <dt id="generic_utils.managers.GenericInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d330&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d370&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances) </dt>
+<dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances)</dt>
 <dd>will be attached to elements of this iterable.</dd>
 </dl>
 <p><tt class="docutils literal"><span class="pre">field_name</span></tt> is the attached object attribute name</p>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">get_inject_object</span></tt> is a callable that takes object in <cite>objects</cite> iterable.</dt>
-<dd>Image will be available as an attribute of the result of 
+<dd>Image will be available as an attribute of the result of
 <cite>get_injector_object(object)</cite>. Images attached to <cite>get_injector_object(object)</cite>
 will be selected.</dd>
 </dl>
 <p>All other kwargs will be passed as arguments to queryset filter function.</p>
-<p>Example: you have a list of comments. Each comment has &#8216;user&#8217; attribute. 
-You want to fetch 10 comments and their authors with avatars. Avatars should 
+<p>Example: you have a list of comments. Each comment has &#8216;user&#8217; attribute.
+You want to fetch 10 comments and their authors with avatars. Avatars should
 be accessible as <cite>user.avatar</cite>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">comments</span> <span class="o">=</span> <span class="n">Comment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">)[:</span><span class="mf">10</span><span class="p">]</span>
-<span class="n">AttachedImage</span><span class="o">.</span><span class="n">injector</span><span class="o">.</span><span class="n">inject_to</span><span class="p">(</span><span class="n">comments</span><span class="p">,</span> <span class="s">&#39;avatar&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">is_main</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>   
+<span class="n">AttachedImage</span><span class="o">.</span><span class="n">injector</span><span class="o">.</span><span class="n">inject_to</span><span class="p">(</span><span class="n">comments</span><span class="p">,</span> <span class="s">&#39;avatar&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">is_main</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -581,7 +595,7 @@ class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="desc
 <dd><p>Manager with for_model method.</p>
 <dl class="method">
 <dt id="generic_utils.managers.GenericModelManager.for_model">
-<tt class="descname">for_model</tt><big>(</big><em>model</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericModelManager.for_model" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">for_model</tt><big>(</big><em>model</em>, <em>content_type=None</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericModelManager.for_model" title="Permalink to this definition">¶</a></dt>
 <dd>Returns all objects that are attached to given model</dd></dl>
 
 </dd></dl>
@@ -590,24 +604,24 @@ class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="desc
 <dt id="generic_utils.managers.RelatedInjector">
 <em class="property">
 class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="descname">RelatedInjector</tt><big>(</big><em>fk_field='object_id'</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Manager that can emulate <tt class="docutils literal"><span class="pre">select_related</span></tt> fetching 
+<dd><p>Manager that can emulate <tt class="docutils literal"><span class="pre">select_related</span></tt> fetching
 reverse relations using 1 additional SQL query.</p>
 <dl class="method">
 <dt id="generic_utils.managers.RelatedInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d270&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d2b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Related objects </dt>
+<dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Related objects</dt>
 <dd>will be attached to elements of this iterable.</dd>
 </dl>
 <p><tt class="docutils literal"><span class="pre">field_name</span></tt> is the attached object attribute name</p>
 <dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">get_injector_object</span></tt> is a callable that takes object in <cite>objects</cite> </dt>
-<dd>iterable. Related objects will be available as an attribute of the 
-result of <tt class="docutils literal"><span class="pre">get_inject_object(obj)</span></tt>. It is assumed that <tt class="docutils literal"><span class="pre">fk_field</span></tt> 
+<dt><tt class="docutils literal"><span class="pre">get_injector_object</span></tt> is a callable that takes object in <cite>objects</cite></dt>
+<dd>iterable. Related objects will be available as an attribute of the
+result of <tt class="docutils literal"><span class="pre">get_inject_object(obj)</span></tt>. It is assumed that <tt class="docutils literal"><span class="pre">fk_field</span></tt>
 points to  <tt class="docutils literal"><span class="pre">get_inject_object(obj)</span></tt>.</dd>
 </dl>
 <p>All other kwargs will be passed as arguments to queryset filter function.</p>
-<p>For example, we need to prefetch user profiles when we display a list of 
+<p>For example, we need to prefetch user profiles when we display a list of
 comments:</p>
 <div class="highlight-python"><pre># models.py
 class UserProfile(models.Model):
@@ -615,17 +629,17 @@ class UserProfile(models.Model):
     info = models.CharField(max_length=100)
     objects = models.Manager()
     injector = RelatedInjector(fk_field='user')
-    
-# views.py            
+
+# views.py
 def show_comments(request, obj_id):
     ...
-    comments = list(Comment.objects.for_model(obj).select_related('user'))                                                
-    UserProfile.injector.inject_to(comments, '_profile_cache', 
+    comments = list(Comment.objects.for_model(obj).select_related('user'))
+    UserProfile.injector.inject_to(comments, '_profile_cache',
                                    lambda comment: comment.user)
-    
+
     return direct_to_template('comment_list.html', {'comments': comments})
- 
-# in comment_list.html             
+
+# in comment_list.html
 {% for comment in comments %}
     &lt;h3&gt;{{ comment.user }}&lt;/h3&gt;
     &lt;h4&gt;{{ comment.user.get_profile.info }}&lt;/h4&gt;
@@ -634,7 +648,7 @@ def show_comments(request, obj_id):
 </div>
 <p><tt class="docutils literal"><span class="pre">comment.user</span></tt> attribute will be selected using <tt class="docutils literal"><span class="pre">select_related</span></tt> and
 <tt class="docutils literal"><span class="pre">comment.user._profile_cache</span></tt> (exposed by get_profile method) will be
-selected by our injector. So there will be only 2 SQL queries for 
+selected by our injector. So there will be only 2 SQL queries for
 selecting all comments with users and user profiles.</p>
 </dd></dl>
 
