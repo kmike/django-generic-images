@@ -28,6 +28,7 @@ Thumbs.db
 #project-specific files
 stuff/
 generic_images/migrations
+GNUmakefile
 
 #doc files
 docs/_build/doctrees/
