@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-18 05:23+0600\n"
+"POT-Creation-Date: 2009-10-26 03:21+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin.py:13 models.py:90
+#: admin.py:17 models.py:91
 msgid "Caption"
 msgstr ""
 
-#: models.py:32
+#: models.py:31
 msgid "Image"
 msgstr ""
 
@@ -28,36 +28,40 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: models.py:93
+#: models.py:94
 msgid "Main image"
 msgstr ""
 
-#: models.py:95
+#: models.py:96
 msgid "Order"
 msgstr ""
 
 #: templates/generic_images/attached_images_inline.html:34
 msgid ""
-" Please install or update Google's <a href='http://gears.google.com/?"
-"action=install'>Gears</a> plugin in order to enable nifty image uploads. "
-msgstr ""
-
-#: templates/generic_images/attached_images_inline.html:38
-msgid "Resize if width is greater than "
-msgstr ""
-
-#: templates/generic_images/attached_images_inline.html:41
-msgid "Select images to upload"
+"\n"
+"           Please install or update Google's\n"
+"           <a href='http://gears.google.com/?action=install'>Gears</a> "
+"plugin\n"
+"           in order to enable advanced image uploader.\n"
+"       "
 msgstr ""
 
 #: templates/generic_images/attached_images_inline.html:42
+msgid "Resize if width is greater than "
+msgstr ""
+
+#: templates/generic_images/attached_images_inline.html:45
+msgid "Select images to upload"
+msgstr ""
+
+#: templates/generic_images/attached_images_inline.html:46
 msgid "Upload images"
 msgstr ""
 
-#: templates/generic_images/attached_images_inline.html:63
+#: templates/generic_images/attached_images_inline.html:67
 msgid "Delete?"
 msgstr ""
 
-#: templates/generic_images/attached_images_inline.html:76
+#: templates/generic_images/attached_images_inline.html:80
 msgid "View on site"
 msgstr ""

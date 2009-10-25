@@ -31,12 +31,16 @@
 <fieldset class="module">
    <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}:</h2>
    <div id='gears-please-install' class='form-row'>
-       {% blocktrans %} Please install or update Google's <a href='http://gears.google.com/?action=install'>Gears</a> plugin in order to enable nifty image uploads. {% endblocktrans %}
+       {% blocktrans %}
+           Please install or update Google's
+           <a href='http://gears.google.com/?action=install'>Gears</a> plugin
+           in order to enable advanced image uploader.
+       {% endblocktrans %}
    </div>
    <div id='gears-uploader' class='form-row'>
-        <input type='checkbox' id='gears-resize-needed' {{ inline_admin_formset.opts.max_width|yesno:"checked," }}>
+        <input type='checkbox' id='gears-resize-needed' {{ inline_admin_formset.opts.max_w|yesno:"checked," }}>
         <label for='gears-resize-needed'>{% trans "Resize if width is greater than " %}</label>
-        <input type='text' id='gears-resize-width' value='{{ inline_admin_formset.opts.max_width }}' size='4'> px
+        <input type='text' id='gears-resize-width' value='{{ inline_admin_formset.opts.max_w }}' size='4'> px
         <br>
         <input type='button' value='{% trans "Select images to upload" %}' id='select-handler'>
         <input type='button' value='{% trans "Upload images" %}' id='upload-handler'>
