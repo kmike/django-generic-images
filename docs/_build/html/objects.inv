@@ -8,6 +8,7 @@ generic_utils.app_utils mod index.html
 generic_images.context_processors mod index.html
 generic_utils.managers mod index.html
 generic_images.managers mod index.html
+generic_images.admin mod index.html
 generic_utils.templatetags mod index.html
 generic_images.managers.ImagesAndUserManager class index.html
 generic_images.models.BaseImageModel class index.html
@@ -26,9 +27,11 @@ generic_images.models.AttachedImage class index.html
 generic_utils.app_utils.PluggableSite.check_permissions method index.html
 generic_images.models.AbstractAttachedImage.get_file_name method index.html
 AbstractAttachedImage.is_main attribute index.html
+generic_utils.app_utils.PluggableSite.patterns method index.html
 generic_utils.app_utils.PluggableSite.urls attribute index.html
 generic_utils.templatetags.InvalidParamsError exception index.html
 generic_utils.app_utils.PluggableSite.reverse method index.html
+generic_utils.models.GenericModelBase class index.html
 generic_images.managers.AttachedImageManager.get_main_for method index.html
 generic_utils.app_utils.get_site_decorator function index.html
 generic_images.models.AbstractAttachedImage.content_object attribute index.html
@@ -40,9 +43,9 @@ generic_images.fields.UserImageCountField class index.html
 generic_utils.managers.GenericModelManager class index.html
 generic_utils.models.GenericModelBase.objects attribute index.html
 generic_utils.app_utils.PluggableSite.get_common_context method index.html
-generic_utils.app_utils.PluggableSite.patterns method index.html
-generic_utils.models.GenericModelBase class index.html
-generic_images.admin.AttachedImageAdminForm class index.html
+generic_images.fields.ImageCountField class index.html
+generic_images.admin.attachedimage_form_factory function index.html
+generic_images.admin.AttachedImageAdminForm attribute index.html
 generic_utils.app_utils.PluggableSite class index.html
 generic_utils.managers.GenericModelManager.for_model method index.html
 generic_utils.models.GenericModelBase.content_object attribute index.html
@@ -54,11 +57,11 @@ generic_images.managers.ImagesAndUserManager.select_with_main_images method inde
 generic_images.models.AbstractAttachedImage.user attribute index.html
 generic_utils.app_utils.simple_getter function index.html
 generic_images.models.AbstractAttachedImage.get_upload_path method index.html
-generic_images.admin.AttachedImagesInline class index.html
+generic_images.admin.AttachedImagesInline attribute index.html
 generic_images.context_processors.thumbnail_types function index.html
 generic_utils.models.TrueGenericModelBase class index.html
 generic_images.managers.AttachedImageManager class index.html
-generic_images.fields.ImageCountField class index.html
+generic_images.admin.attachedimages_inline_factory function index.html
 generic_utils.managers.GenericInjector.inject_to method index.html
 generic_utils.app_utils.GenericModelBase.object_id attribute index.html
 generic_images.models.ReplaceOldImageModel class index.html

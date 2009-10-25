@@ -88,12 +88,8 @@ Models
 Admin
 -----
 
-.. autoclass:: generic_images.admin.AttachedImagesInline()
-    :show-inheritance:
-
-
-.. autoclass:: generic_images.admin.AttachedImageAdminForm()
-    :show-inheritance:
+.. automodule:: generic_images.admin
+    :members:
 
 
 Managers

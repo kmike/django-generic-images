@@ -204,20 +204,25 @@ If the file for image is re-uploaded, old file is deleted.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="admin">
-<h4>Admin<a class="headerlink" href="#admin" title="Permalink to this headline">¶</a></h4>
-<dl class="class">
+<div class="section" id="module-generic_images.admin">
+<h4>Admin<a class="headerlink" href="#module-generic_images.admin" title="Permalink to this headline">¶</a></h4>
+<dl class="attribute">
+<dt id="generic_images.admin.AttachedImageAdminForm">
+<tt class="descclassname">generic_images.admin.</tt><tt class="descname">AttachedImageAdminForm</tt><a class="headerlink" href="#generic_images.admin.AttachedImageAdminForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Form for AttachedImage model to be used in inline admin</p>
+<p>alias of <tt class="xref docutils literal"><span class="pre">_AttachedImageAdminForm</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="generic_images.admin.AttachedImagesInline">
-<em class="property">
-class </em><tt class="descclassname">generic_images.admin.</tt><tt class="descname">AttachedImagesInline</tt><a class="headerlink" href="#generic_images.admin.AttachedImagesInline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">django.contrib.contenttypes.generic.GenericTabularInline</span></tt></p>
-<p>InlineModelAdmin for attached images.
+<tt class="descclassname">generic_images.admin.</tt><tt class="descname">AttachedImagesInline</tt><a class="headerlink" href="#generic_images.admin.AttachedImagesInline" title="Permalink to this definition">¶</a></dt>
+<dd><p>InlineModelAdmin for attached images.
 Adds multi-image uploader with progress bar, before-upload image
 previews and client-side resizing. Uploader is based
 on GearsUploader (<a class="reference" href="http://bitbucket.org/kmike/gearsuploader/">http://bitbucket.org/kmike/gearsuploader/</a>) project.</p>
 <p>To make this work copy <tt class="docutils literal"><span class="pre">generic_images</span></tt> folder from
 <tt class="docutils literal"><span class="pre">generic_images/media/</span></tt> to your <tt class="docutils literal"><span class="pre">MEDIA_ROOT</span></tt>. Then use
-AttachedImagesInline class for you inlines:</p>
+<tt class="docutils literal"><span class="pre">AttachedImagesInline</span></tt> class for you inlines:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#admin.py</span>
 
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
@@ -245,25 +250,35 @@ be selected by opening file selection dialog several times.</p>
 blank. If it is unchecked then images are not resized before uploading.
 User can check it and set his max image width.</p>
 <p>In order to set the default value and mark the checkbox as checked by
-default subclass AttachedImagesInline and set <tt class="docutils literal"><span class="pre">max_width</span></tt> parameter:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyImagesInline</span><span class="p">(</span><span class="n">AttachedImagesInline</span><span class="p">):</span>
-    <span class="n">max_width</span><span class="o">=</span><span class="mf">600</span>
+default create customized <tt class="docutils literal"><span class="pre">AttachedImagesInline</span></tt> class using
+<a title="generic_images.admin.attachedimages_inline_factory" class="reference" href="#generic_images.admin.attachedimages_inline_factory"><tt class="xref docutils literal"><span class="pre">attachedimages_inline_factory()</span></tt></a> function. This function can also be
+used to change uploader language (language auto-discovering is not
+implemented yet):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">generic_images.admin</span> <span class="kn">import</span> <span class="n">attachedimages_inline_factory</span>
 
 <span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
-    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">MyImagesInline</span><span class="p">]</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">attachedimages_inline_factory</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s">&#39;ru&#39;</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mf">1024</span><span class="p">)]</span>
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyModelAdmin</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>alias of <tt class="xref docutils literal"><span class="pre">_AttachedImagesInline</span></tt></p>
 </dd></dl>
 
-<dl class="class">
-<dt id="generic_images.admin.AttachedImageAdminForm">
-<em class="property">
-class </em><tt class="descclassname">generic_images.admin.</tt><tt class="descname">AttachedImageAdminForm</tt><a class="headerlink" href="#generic_images.admin.AttachedImageAdminForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
-<p>Form for AttachedImage model to be used in inline admin</p>
-</dd></dl>
+<dl class="function">
+<dt id="generic_images.admin.attachedimage_form_factory">
+<tt class="descclassname">generic_images.admin.</tt><tt class="descname">attachedimage_form_factory</tt><big>(</big><em>lang='en'</em><big>)</big><a class="headerlink" href="#generic_images.admin.attachedimage_form_factory" title="Permalink to this definition">¶</a></dt>
+<dd>Returns ModelForm class to be used in admin.
+&#8216;lang&#8217; is the language for GearsUploader (can be &#8216;en&#8217; and &#8216;ru&#8217; at the
+moment).</dd></dl>
+
+<dl class="function">
+<dt id="generic_images.admin.attachedimages_inline_factory">
+<tt class="descclassname">generic_images.admin.</tt><tt class="descname">attachedimages_inline_factory</tt><big>(</big><em>lang='en'</em>, <em>max_width=''</em><big>)</big><a class="headerlink" href="#generic_images.admin.attachedimages_inline_factory" title="Permalink to this definition">¶</a></dt>
+<dd>Returns InlineModelAdmin for attached images.
+&#8216;lang&#8217; is the language for GearsUploader (can be &#8216;en&#8217; and &#8216;ru&#8217; at the
+moment). &#8216;max_width&#8217; is default resize width parameter to be set in
+widget.</dd></dl>
 
 </div>
 <div class="section" id="module-generic_images.managers">
@@ -395,7 +410,7 @@ Useful for managing possible sorl.thumbnails thumbnail&#8217;s sizes</dd></dl>
 <dl class="class">
 <dt id="generic_utils.app_utils.PluggableSite">
 <em class="property">
-class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>app_name</em>, <em>queryset=None</em>, <em>object_regex=None</em>, <em>lookup_field=None</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1c7a030&gt;</em>, <em>context_processors=None</em>, <em>object_getter=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
+class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>app_name</em>, <em>queryset=None</em>, <em>object_regex=None</em>, <em>lookup_field=None</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1caa2f0&gt;</em>, <em>context_processors=None</em>, <em>object_getter=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for reusable apps.
 The approach is similar to django AdminSite.
 For usage case please check photo_albums app.</p>
@@ -564,7 +579,7 @@ be attached via generic relationship. It can be considered as an addition to
 GFKmanager and GFKQuerySet from djangosnippets for different use cases.</p>
 <dl class="method">
 <dt id="generic_utils.managers.GenericInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d370&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d3b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances)</dt>
 <dd>will be attached to elements of this iterable.</dd>
@@ -608,7 +623,7 @@ class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="desc
 reverse relations using 1 additional SQL query.</p>
 <dl class="method">
 <dt id="generic_utils.managers.RelatedInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d2b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d2f0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Related objects</dt>
 <dd>will be attached to elements of this iterable.</dd>
@@ -711,7 +726,7 @@ class </em><tt class="descclassname">generic_utils.test_helpers.</tt><tt class="
 <li><a class="reference" href="#usage">Usage</a><ul>
 <li><a class="reference" href="#generic-images">Generic Images</a><ul>
 <li><a class="reference" href="#models">Models</a></li>
-<li><a class="reference" href="#admin">Admin</a></li>
+<li><a class="reference" href="#module-generic_images.admin">Admin</a></li>
 <li><a class="reference" href="#module-generic_images.managers">Managers</a></li>
 <li><a class="reference" href="#module-generic_images.forms">Forms</a></li>
 <li><a class="reference" href="#module-generic_images.fields">Fields for denormalisation</a></li>
