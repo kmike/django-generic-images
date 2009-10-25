@@ -1,12 +1,11 @@
 #coding: utf-8
 import os
-import random
+#import random
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 from django.db.models import Max
-from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 
 from generic_images.signals import image_saved, image_deleted
