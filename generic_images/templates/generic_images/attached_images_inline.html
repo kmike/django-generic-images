@@ -30,30 +30,33 @@
 {{ inline_admin_formset.formset.management_form }}
 <fieldset class="module">
    <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}:</h2>
-   <div id='gears-please-install' class='form-row'>
-       {% blocktrans %}
-           Please install or update Google's
-           <a href='http://gears.google.com/?action=install'>Gears</a> plugin
-           in order to enable advanced image uploader.
-       {% endblocktrans %}
-   </div>
-   <div id='gears-uploader' class='form-row'>
-        <input type='checkbox' id='gears-resize-needed' {{ inline_admin_formset.opts.max_w|yesno:"checked," }}>
-        <label for='gears-resize-needed'>{% trans "Resize if width is greater than " %}</label>
-        <input type='text' id='gears-resize-width' value='{{ inline_admin_formset.opts.max_w }}' size='4'> px
-        <br>
-        <input type='button' value='{% trans "Select images to upload" %}' id='select-handler'>
-        <input type='button' value='{% trans "Upload images" %}' id='upload-handler'>
-        <span id='upload-status'></span>
-        <span id='request-user-id'>{{ request.user.pk }}</span>
 
-        <div class='container'>
-            <div id='progress-bar'></div>
-            <div class='clear'></div>
-        </div>
+   {% if original %}
+       <div id='gears-please-install' class='form-row'>
+           {% blocktrans %}
+               Please install or update Google's
+               <a href='http://gears.google.com/?action=install'>Gears</a> plugin
+               in order to enable advanced image uploader.
+           {% endblocktrans %}
+       </div>
+       <div id='gears-uploader' class='form-row'>
+            <input type='checkbox' id='gears-resize-needed' {{ inline_admin_formset.opts.max_w|yesno:"checked," }}>
+            <label for='gears-resize-needed'>{% trans "Resize if width is greater than " %}</label>
+            <input type='text' id='gears-resize-width' value='{{ inline_admin_formset.opts.max_w }}' size='4'> px
+            <br>
+            <input type='button' value='{% trans "Select images to upload" %}' id='select-handler'>
+            <input type='button' value='{% trans "Upload images" %}' id='upload-handler'>
+            <span id='upload-status'></span>
+            <span id='request-user-id'>{{ request.user.pk }}</span>
 
-        <div id='thumbs'></div>
-   </div>
+            <div class='container'>
+                <div id='progress-bar'></div>
+                <div class='clear'></div>
+            </div>
+
+            <div id='thumbs'></div>
+       </div>
+   {% endif %}
 
    <div id='standard-inline'>
        {{ inline_admin_formset.formset.non_form_errors }}
