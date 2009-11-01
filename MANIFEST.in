@@ -16,4 +16,3 @@ include docs/index.rst
 include docs/make.bat
 include docs/Makefile
 include docs/img/*.png
-include docs/_static
