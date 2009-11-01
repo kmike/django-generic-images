@@ -1,6 +1,7 @@
-README
-AUTHORS
-setup.py
+include README
+include AUTHORS
+include LICENSE
+include setup.py
 
 include generic_images/*.py
 include generic_images/locale/en/LC_MESSAGES/*
