@@ -3,9 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. toctree::
-   :maxdepth: 2
-
 =====================================
 django-generic-images's documentation
 =====================================
@@ -28,6 +25,12 @@ required if you want to use
 There is an image gallery app
 (`django-photo-albums <http://bitbucket.org/kmike/django-photo-albums/>`_)
 based on django-generic-images.
+
+.. toctree::
+   :maxdepth: 2
+
+   upgrade
+
 
 ************
 Installation

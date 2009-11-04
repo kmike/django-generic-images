@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
       name='django-generic-images',
-      version='0.35.7',
+      version='0.35.8',
       author='Mikhail Korobov',
       author_email='kmike84@gmail.com',
       url='http://bitbucket.org/kmike/django-generic-images/',
@@ -14,7 +14,9 @@ setup(
                          "other Django model using generic relations. "
                          "It also provides admin multi-image uploader with "
                          "client-side image resizing, animated progress bar "
-                         "and before-upload image previews.",
+                         "and before-upload image previews.\n\n"
+
+                         "Documentation is here: http://django-generic-images.googlecode.com/hg/docs/_build/html/index.html",
 
       license = 'MIT license',
       packages=['generic_images', 'generic_utils'],

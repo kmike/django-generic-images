@@ -18,7 +18,7 @@ def attachedimage_form_factory(lang='en'):
 
         class Media:
             js = [
-                  'generic_images/js/mootools-1.2.3-core-yc.js',
+                  'generic_images/js/mootools-1.2.4-core-yc.js',
                   'generic_images/js/GearsUploader.%s.yui.js' % lang,
                   'generic_images/js/AttachedImageInline.js',
             ]
@@ -97,7 +97,7 @@ AttachedImagesInline = attachedimages_inline_factory()
     default create customized ``AttachedImagesInline`` class using
     :func:`attachedimages_inline_factory` function. This function can also be
     used to change uploader language (language auto-discovering is not
-    implemented yet)::
+    implemented)::
 
         from generic_images.admin import attachedimages_inline_factory
 

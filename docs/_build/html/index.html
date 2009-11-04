@@ -19,7 +19,8 @@
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="django-generic-images v0.35 documentation" href="" /> 
+    <link rel="top" title="django-generic-images v0.35 documentation" href="" />
+    <link rel="next" title="Upgrade notes" href="upgrade.html" /> 
   </head>
   <body>
     <div class="related">
@@ -31,6 +32,9 @@
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="upgrade.html" title="Upgrade notes"
+             accesskey="N">next</a> |</li>
         <li><a href="">django-generic-images v0.35 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -40,9 +44,7 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <ul class="simple">
-</ul>
-<div class="section" id="django-generic-images-s-documentation">
+  <div class="section" id="django-generic-images-s-documentation">
 <h1>django-generic-images&#8217;s documentation<a class="headerlink" href="#django-generic-images-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>django-generic-images is a generic images pluggable django app.</p>
 <p>This app provides image model (useful managers, methods and fields)
@@ -58,6 +60,12 @@ required if you want to use
 <p>There is an image gallery app
 (<a class="reference" href="http://bitbucket.org/kmike/django-photo-albums/">django-photo-albums</a>)
 based on django-generic-images.</p>
+<ul>
+<li class="toctree-l1"><a class="reference" href="upgrade.html">Upgrade notes</a><ul>
+<li class="toctree-l2"><a class="reference" href="upgrade.html#from-0-35-7-to-0-35-8">From 0.35.7 to 0.35.8</a></li>
+</ul>
+</li>
+</ul>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><pre>$ pip install django-generic-images</pre>
@@ -253,7 +261,7 @@ User can check it and set his max image width.</p>
 default create customized <tt class="docutils literal"><span class="pre">AttachedImagesInline</span></tt> class using
 <a title="generic_images.admin.attachedimages_inline_factory" class="reference" href="#generic_images.admin.attachedimages_inline_factory"><tt class="xref docutils literal"><span class="pre">attachedimages_inline_factory()</span></tt></a> function. This function can also be
 used to change uploader language (language auto-discovering is not
-implemented yet):</p>
+implemented):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">generic_images.admin</span> <span class="kn">import</span> <span class="n">attachedimages_inline_factory</span>
 
 <span class="k">class</span> <span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
@@ -410,7 +418,7 @@ Useful for managing possible sorl.thumbnails thumbnail&#8217;s sizes</dd></dl>
 <dl class="class">
 <dt id="generic_utils.app_utils.PluggableSite">
 <em class="property">
-class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>app_name</em>, <em>queryset=None</em>, <em>object_regex=None</em>, <em>lookup_field=None</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1caa2f0&gt;</em>, <em>context_processors=None</em>, <em>object_getter=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
+class </em><tt class="descclassname">generic_utils.app_utils.</tt><tt class="descname">PluggableSite</tt><big>(</big><em>instance_name</em>, <em>app_name</em>, <em>queryset=None</em>, <em>object_regex=None</em>, <em>lookup_field=None</em>, <em>extra_context=None</em>, <em>template_object_name='object'</em>, <em>has_edit_permission=&lt;function &lt;lambda&gt; at 0x1d75570&gt;</em>, <em>context_processors=None</em>, <em>object_getter=None</em><big>)</big><a class="headerlink" href="#generic_utils.app_utils.PluggableSite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for reusable apps.
 The approach is similar to django AdminSite.
 For usage case please check photo_albums app.</p>
@@ -579,7 +587,7 @@ be attached via generic relationship. It can be considered as an addition to
 GFKmanager and GFKQuerySet from djangosnippets for different use cases.</p>
 <dl class="method">
 <dt id="generic_utils.managers.GenericInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d3b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a4a4b0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.GenericInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Images (or other generic-related model instances)</dt>
 <dd>will be attached to elements of this iterable.</dd>
@@ -623,7 +631,7 @@ class </em><tt class="descclassname">generic_utils.managers.</tt><tt class="desc
 reverse relations using 1 additional SQL query.</p>
 <dl class="method">
 <dt id="generic_utils.managers.RelatedInjector.inject_to">
-<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x198d2f0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector.inject_to" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">inject_to</tt><big>(</big><em>objects</em>, <em>field_name</em>, <em>get_inject_object=&lt;function &lt;lambda&gt; at 0x1a4a3f0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#generic_utils.managers.RelatedInjector.inject_to" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">objects</span></tt> is an iterable. Related objects</dt>
 <dd>will be attached to elements of this iterable.</dd>
@@ -747,6 +755,9 @@ class </em><tt class="descclassname">generic_utils.test_helpers.</tt><tt class="
 </li>
 </ul>
 
+            <h4>Next topic</h4>
+            <p class="topless"><a href="upgrade.html"
+                                  title="next chapter">Upgrade notes</a></p>
             <h3>This Page</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/index.txt"
@@ -778,6 +789,9 @@ class </em><tt class="descclassname">generic_utils.test_helpers.</tt><tt class="
         <li class="right" >
           <a href="modindex.html" title="Global Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="upgrade.html" title="Upgrade notes"
+             >next</a> |</li>
         <li><a href="">django-generic-images v0.35 documentation</a> &raquo;</li> 
       </ul>
     </div>
