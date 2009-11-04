@@ -1,3 +1,4 @@
+(function($){  //$-safe plugin
 
 var AttachedImagesAdminUploader = new Class({
     Extends: DjangoImageUploader,
@@ -91,3 +92,5 @@ window.addEvent('domready', function(){
         $('gears-please-install').hide();
     }
 });
+
+})(document.id); // end $-safe plugin
