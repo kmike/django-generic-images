@@ -3,10 +3,11 @@ from distutils.core import setup
 
 setup(
       name='django-generic-images',
-      version='0.35.8',
+      version='0.36',
       author='Mikhail Korobov',
       author_email='kmike84@gmail.com',
       url='http://bitbucket.org/kmike/django-generic-images/',
+      download_url = 'http://bitbucket.org/kmike/django-generic-images/get/tip.zip',
 
       description = 'Generic images pluggable django app',
       long_description = "This app provides image model (with useful managers, "
@@ -23,6 +24,7 @@ setup(
       package_data={'generic_images': [
                                         'locale/en/LC_MESSAGES/*',
                                         'locale/ru/LC_MESSAGES/*',
+                                        'locale/pl/LC_MESSAGES/*',
                                         'templates/generic_images/*',
                                         'media/generic_images/js/*'
                                       ]},

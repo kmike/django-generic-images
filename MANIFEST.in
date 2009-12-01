@@ -6,6 +6,7 @@ include setup.py
 include generic_images/*.py
 include generic_images/locale/en/LC_MESSAGES/*
 include generic_images/locale/ru/LC_MESSAGES/*
+include generic_images/locale/pl/LC_MESSAGES/*
 include generic_images/media/generic_images/js/*
 include generic_images/templates/generic_images/*
 
