@@ -17,8 +17,9 @@ var AttachedImagesAdminUploader = new Class({
     cleanupFields: function(fields){
         var cleanedFields = {};
         var self = this;
+        var denied_names = ['_save', '_addanother', '_continue'];
         $each(fields, function(value, name){
-            if (name && name[0] != '_' && !self.isFormsetField(name))
+            if (name && !(name in denied_names) && !self.isFormsetField(name))
                 cleanedFields[name]=value;
         });
         return cleanedFields;
