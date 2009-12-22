@@ -7,11 +7,12 @@ from generic_images.models import AttachedImage
 
 admin.site.register(AttachedImage)
 
-def attachedimage_form_factory(lang='en'):
+def attachedimage_form_factory(lang='en', debug=False):
     ''' Returns ModelForm class to be used in admin.
         'lang' is the language for GearsUploader (can be 'en' and 'ru' at the
         moment).
     '''
+    yui = '' if debug else '.yui'
     class _AttachedImageAdminForm(forms.ModelForm):
 
         caption = forms.CharField(label=_('Caption'), required=False)
@@ -19,7 +20,7 @@ def attachedimage_form_factory(lang='en'):
         class Media:
             js = [
                   'generic_images/js/mootools-1.2.4-core-yc.js',
-                  'generic_images/js/GearsUploader.%s.yui.js' % lang,
+                  'generic_images/js/GearsUploader.%s%s.js' % (lang, yui,),
                   'generic_images/js/AttachedImageInline.js',
             ]
 
@@ -31,7 +32,7 @@ AttachedImageAdminForm = attachedimage_form_factory()
 ''' Form for AttachedImage model to be used in inline admin '''
 
 
-def attachedimages_inline_factory(lang='en', max_width=''):
+def attachedimages_inline_factory(lang='en', max_width='', debug=False):
     '''  Returns InlineModelAdmin for attached images.
         'lang' is the language for GearsUploader (can be 'en' and 'ru' at the
         moment). 'max_width' is default resize width parameter to be set in
@@ -40,7 +41,7 @@ def attachedimages_inline_factory(lang='en', max_width=''):
 
     class _AttachedImagesInline(GenericTabularInline):
         model = AttachedImage
-        form = attachedimage_form_factory(lang)
+        form = attachedimage_form_factory(lang, debug)
         template = 'generic_images/attached_images_inline.html'
         max_w = max_width
 
