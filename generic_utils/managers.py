@@ -17,7 +17,8 @@ class RelatedInjector(models.Manager):
         self.fk_field = fk_field
         super(RelatedInjector, self).__init__(*args, **kwargs)
 
-    def inject_to(self, objects, field_name, get_inject_object = lambda obj: obj,  **kwargs):
+    def inject_to(self, objects, field_name, get_inject_object = lambda obj: obj,
+                  select_related = None, **kwargs):
         '''
         ``objects`` is an iterable. Related objects
             will be attached to elements of this iterable.
@@ -28,6 +29,9 @@ class RelatedInjector(models.Manager):
             iterable. Related objects will be available as an attribute of the
             result of ``get_inject_object(obj)``. It is assumed that ``fk_field``
             points to  ``get_inject_object(obj)``.
+
+        ``select_related`` is a list to be passed to select_related method for
+            related objects.
 
         All other kwargs will be passed as arguments to queryset filter function.
 
@@ -68,6 +72,9 @@ class RelatedInjector(models.Manager):
         kwargs.update({self.fk_field+'__in': [ get_inject_object(obj).pk for obj in objects ]})
 
         data = self.get_query_set().filter(**kwargs)
+        if select_related:
+            data = data.select_related(select_related)
+
         data_dict = dict((getattr(item, self.fk_field), item) for item in list(data))
 
         # add info to original data
